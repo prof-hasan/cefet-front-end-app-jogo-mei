@@ -23,7 +23,21 @@ body {
 
 header {
     grid-area: header;
-    background-color: blue;
+    background-color: rgb(187, 142, 88);
+}
+
+#outros-players {
+    display: flex;
+    justify-content: space-around;
+}
+
+#outros-players div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.player-portrait {
+    width: 6em;
 }
 
 nav {
@@ -54,6 +68,14 @@ nav h1 {
 .atributo-status {
     width: 1.9em;
     border-radius: 50%;
+}
+
+#botao-passa {
+    font-size: 2em;
+    display: block;
+    margin: 1em auto;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 main {

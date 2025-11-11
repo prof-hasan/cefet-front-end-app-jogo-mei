@@ -1,10 +1,14 @@
+let botaoPassaEl = document.querySelector("#botao-passa");
+
 let personagens = [
     ["Roberta", [7, 4, 6, 3]],
     ["Hasan", [10, 10, 10, 10]],
     ["João", [2, 7, 7, 10]],
     ["Janaína", [6, 9, 5, 2]],
     ["Nicolas", [4, 5, 2, 6]]
-]
+];
+
+let vez = 0;
 
 let jogadores = [];
 
@@ -112,17 +116,42 @@ function atualizaHTMLJogador(jogador) {
     let jogadorBarraMoney = document.querySelector(`#p${jogador.num}-quantia-dinheiro`);
     let jogadorName = document.querySelector(`#p${jogador.num}-nome`);
 
-    jogadorBarraLife.innerHTML = rotuloInnerAtributo(0, jogador.vida);
-    jogadorBarraWater.innerHTML = rotuloInnerAtributo(1, jogador.agua);
-    jogadorBarraDefense.innerHTML = rotuloInnerAtributo(2, jogador.defesa);
-    jogadorBarraMoney.innerHTML = rotuloInnerAtributo(3, jogador.dinheiro);
+    if (jogador.num === 1) {
+        jogadorBarraLife.innerHTML = rotuloInnerAtributo(0, jogador.vida);
+        jogadorBarraWater.innerHTML = rotuloInnerAtributo(1, jogador.agua);
+        jogadorBarraDefense.innerHTML = rotuloInnerAtributo(2, jogador.defesa);
+        jogadorBarraMoney.innerHTML = rotuloInnerAtributo(3, jogador.dinheiro);
+    }
+    else {
+        jogadorBarraLife.innerHTML = `Saúde: ${jogador.vida}`;
+        jogadorBarraWater.innerHTML = `Disp. Hídrica: ${jogador.agua}`;
+        jogadorBarraDefense.innerHTML = `Def. Climática: ${jogador.defesa}`;
+        jogadorBarraMoney.innerHTML = `Disp. Monetária: ${jogador.dinheiro}`;
+    }
+
     jogadorName.innerHTML = jogador.nome;
+}
+
+function passaVez() {
+    vez++;
+    console.log(vez);
+    if (vez === 5)
+        vez = 0;
+
+    for (let i = 0; i < 5; i++) {
+        jogadores[i].num--;
+        if (jogadores[i].num === 0)
+            jogadores[i].num = 5;
+    
+        atualizaHTMLJogador(jogadores[i]);
+    }
 }
 
 for (let i = 0; i < 5; i++) {
     jogadores.push(criaJogador(i + 1));
+    atualizaHTMLJogador(jogadores[vez + i]);
 }
 
-atualizaHTMLJogador(jogadores[0]);
+botaoPassaEl.addEventListener("click", passaVez);
 
 console.log(jogadores);
