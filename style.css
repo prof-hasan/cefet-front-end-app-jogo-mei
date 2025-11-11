@@ -34,10 +34,13 @@ header {
 #outros-players div {
     display: flex;
     flex-wrap: wrap;
+    padding: 5px;
 }
 
 .player-portrait {
+    border-radius: 10px;
     width: 6em;
+    margin: 0 5px;
 }
 
 nav {
@@ -53,6 +56,7 @@ nav h1 {
     display: block;
     margin: 1em auto;
     width: 20em;
+    border-radius: 10px;
 }
 
 .barra-atributo {
