@@ -1,0 +1,67 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+}
+
+#container {
+    height: 100vh;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 0.4fr 4fr 0.3fr;
+    grid-template-areas: 
+        "nav header"
+        "nav main"
+        "footer footer"
+}
+
+header {
+    grid-area: header;
+    background-color: blue;
+}
+
+nav {
+    grid-area: nav;
+    background-color: rgb(187, 142, 88);
+}
+
+nav h1 {
+    text-align: center;
+}
+
+.carta-img {
+    display: block;
+    margin: 1em auto;
+    width: 20em;
+}
+
+.barra-atributo {
+    display: flex;
+    justify-content: space-around;
+
+    margin: 0.5em;
+    padding: 3px;
+    background-color: #414141;
+    border-radius: 30px;
+}
+
+.atributo-status {
+    width: 1.9em;
+    border-radius: 50%;
+}
+
+main {
+    grid-area: main;
+    background-color: purple;
+}
+
+footer {
+    grid-area: footer;
+    background-color: yellow;
+}
