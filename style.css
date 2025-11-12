@@ -91,3 +91,58 @@ footer {
     grid-area: footer;
     background-color: yellow;
 }
+
+input[type="checkbox"]{
+    width: 50px;
+    height: 25px;
+    appearance: none;
+    background-color: #dae2da;
+    border-radius: 50px;
+    box-shadow: inset 0px 0px 16px 1px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    
+}
+
+input:checked[type="checkbox"] {
+    background-color: #3decb1;
+    transition: 0.4s;
+}
+
+input[type="checkbox"]:before{
+    content: '';
+    width: 25px;
+    height: 25px;
+    background-color: #EDF3F1;
+    border-radius: 50px;
+    position: absolute;
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.4);
+    transform: scale(0.8);
+    transition: .4s;
+    left: 0;
+    top: 0;
+}
+
+input:checked[type="checkbox"]::before{
+    transition: .4s;
+    position: absolute;
+    left: 25px;
+    top: 0;
+}
+
+footer{
+    display: flex;
+    position: relative;
+}
+
+#modo-daltonismo{
+    display: flex;
+
+    align-items: center;
+    position: absolute;
+    right: 1vw;
+    top: 10%;
+    width: auto;
+    white-space: nowrap;
+}

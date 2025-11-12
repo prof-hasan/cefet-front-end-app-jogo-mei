@@ -28,13 +28,31 @@ function checaAtributo(tipo) {
     }
 }
 
+let modoDaltonicoAtivo = false;
+let botaoModoDaltonicoEl = document.querySelector('#botao-daltonismo');
+
+botaoModoDaltonicoEl.addEventListener('click', () => {
+    if(modoDaltonicoAtivo){
+        modoDaltonicoAtivo = false;
+    }
+    else{
+        modoDaltonicoAtivo = true;
+    }
+
+    atualizaHTMLJogador(jogadores[vez]);
+})
 
 function rotuloInnerAtributo(tipo, valorAtributo) {
     let rotulo = "";
     let atributoA = checaAtributo(tipo);
     
     for (let i = 0; i < valorAtributo; i++) {
-        rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status">`;
+        if(modoDaltonicoAtivo){
+            rotulo = rotulo + `<img src="imgs/${atributoA}dotdaltonico.png" class="atributo-status">`;
+        }
+        else{
+            rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status">`;
+        }
     }
 
     return rotulo;
@@ -131,6 +149,8 @@ function atualizaHTMLJogador(jogador) {
 
     jogadorName.innerHTML = jogador.nome;
 }
+
+
 
 function passaVez() {
     vez++;
