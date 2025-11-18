@@ -1,5 +1,9 @@
 let botaoPassaEl = document.querySelector("#botao-passa");
 
+let trocaAtNode = document.querySelectorAll(".troca-status");
+
+let bodyEl = document.querySelector("body");
+
 let personagens = [
     ["Roberta", [7, 4, 6, 3]],
     ["Hasan", [10, 10, 10, 10]],
@@ -150,7 +154,7 @@ function atualizaHTMLJogador(jogador) {
     jogadorName.innerHTML = jogador.nome;
 }
 
-
+//Passagem turnos
 
 function passaVez() {
     vez++;
@@ -175,3 +179,20 @@ for (let i = 0; i < 5; i++) {
 botaoPassaEl.addEventListener("click", passaVez);
 
 console.log(jogadores);
+
+//Jogabilidade
+
+function retiraAtributo() {
+
+}
+
+function moveAt(e) {
+    let atualEl = e.currentTarget;
+
+    let novaImg = document.createElement("img");
+    novaImg.classList.add("")
+}
+
+for (let i = 0; i < trocaAtNode.length; i++) {
+    trocaAtNode[i].addEventListener("mousedown", (e) => moveAt(e))
+}

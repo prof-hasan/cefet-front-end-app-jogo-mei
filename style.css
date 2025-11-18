@@ -28,18 +28,20 @@ header {
 
 #outros-players {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
+    flex: 1 1 260px;
 }
 
 #outros-players div {
     display: flex;
-    flex-wrap: wrap;
     padding: 5px;
 }
 
 .player-portrait {
     border-radius: 10px;
     width: 6em;
+    scale: 100%;
     margin: 0 5px;
 }
 
@@ -55,7 +57,7 @@ nav h1 {
 .carta-img {
     display: block;
     margin: 1em auto;
-    width: 20em;
+    width: 70%;
     border-radius: 10px;
 }
 
@@ -80,6 +82,38 @@ nav h1 {
     margin: 1em auto;
     border-radius: 10px;
     padding: 5px;
+}
+
+#troca-atributos {
+    margin: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    gap: 1em;
+    justify-content: space-evenly;
+}
+
+.troca-status {
+    display: inline;
+    width: 20%;
+    height: 100%;
+    border: 1px solid rgb(32, 32, 32);
+}
+
+#troca-vida {
+    background-color: red;
+}
+
+#troca-agua {
+    background-color: blue;
+}
+
+#troca-defesa {
+    background-color: grey;
+}
+
+#troca-dinheiro {
+    background-color: yellow;
 }
 
 main {
