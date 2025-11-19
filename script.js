@@ -4,6 +4,8 @@ let trocaAtNode = document.querySelectorAll(".troca-status");
 
 let bodyEl = document.querySelector("body");
 
+let barraNode = document.querySelectorAll(".barra-atributo");
+
 let personagens = [
     ["Roberta", [7, 4, 6, 3]],
     ["Hasan", [10, 10, 10, 10]],
@@ -51,11 +53,11 @@ function rotuloInnerAtributo(tipo, valorAtributo) {
     let atributoA = checaAtributo(tipo);
     
     for (let i = 0; i < valorAtributo; i++) {
-        if(modoDaltonicoAtivo){
-            rotulo = rotulo + `<img src="imgs/${atributoA}dotdaltonico.png" class="atributo-status">`;
+        if (modoDaltonicoAtivo){
+            rotulo = rotulo + `<img src="imgs/${atributoA}dotdaltonico.png" class="atributo-status fixo" data-tipo="${tipo}">`;
         }
-        else{
-            rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status">`;
+        else {
+            rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status fixo" data-tipo="${tipo}">`;
         }
     }
 
@@ -132,10 +134,10 @@ function criaJogador(nJogador) {
 }
 
 function atualizaHTMLJogador(jogador) {
-    let jogadorBarraLife = document.querySelector(`#p${jogador.num}-quantia-vida`);
-    let jogadorBarraWater = document.querySelector(`#p${jogador.num}-quantia-agua`);
-    let jogadorBarraDefense = document.querySelector(`#p${jogador.num}-quantia-defesa`);
-    let jogadorBarraMoney = document.querySelector(`#p${jogador.num}-quantia-dinheiro`);
+    let jogadorBarraLife = document.querySelector(`#p${jogador.num}-quantia-life`);
+    let jogadorBarraWater = document.querySelector(`#p${jogador.num}-quantia-water`);
+    let jogadorBarraDefense = document.querySelector(`#p${jogador.num}-quantia-defense`);
+    let jogadorBarraMoney = document.querySelector(`#p${jogador.num}-quantia-money`);
     let jogadorName = document.querySelector(`#p${jogador.num}-nome`);
 
     if (jogador.num === 1) {
@@ -154,7 +156,7 @@ function atualizaHTMLJogador(jogador) {
     jogadorName.innerHTML = jogador.nome;
 }
 
-//Passagem turnos
+//Passagem turnos=
 
 function passaVez() {
     vez++;
@@ -169,30 +171,170 @@ function passaVez() {
     
         atualizaHTMLJogador(jogadores[i]);
     }
+
+    atNode = document.querySelectorAll(".fixo");
+
+    for (let i = 0; i < atNode.length; i++) {
+        atNode[i].addEventListener("mousedown", geraAt);
+        atNode[i].style.cursor = "grab";
+    }
 }
+
+botaoPassaEl.addEventListener("click", passaVez);
 
 for (let i = 0; i < 5; i++) {
     jogadores.push(criaJogador(i + 1));
     atualizaHTMLJogador(jogadores[vez + i]);
 }
 
-botaoPassaEl.addEventListener("click", passaVez);
 
 console.log(jogadores);
 
+
 //Jogabilidade
+
+let atNode = document.querySelectorAll(".fixo");
+let elDragging = false;
+let xInicial;
+let yInicial;
+
+let barraEmHover = null;
 
 function retiraAtributo() {
 
 }
 
-function moveAt(e) {
-    let atualEl = e.currentTarget;
+function geraAt(e) {
+    if (!elDragging) {
+        console.log("Gerou");
+        elDragging = true;
+        let atualEl = e.currentTarget;
 
-    let novaImg = document.createElement("img");
-    novaImg.classList.add("")
+        let novaImg = document.createElement("img");
+        novaImg.classList.add("atributo-status", "mov-img");
+
+        let tipoAtributo = Number(atualEl.dataset.tipo);
+        let atributoAtual = checaAtributo(tipoAtributo);
+
+        xInicial = e.clientX - 15;
+        yInicial = e.clientY - 15;
+
+        if (modoDaltonicoAtivo) {
+            rotulo = `imgs/${atributoAtual}dotdaltonico.png`;
+        }
+        else {
+            rotulo = `imgs/${atributoAtual}dot.png`;
+        }
+
+        novaImg.src = rotulo;
+
+        bodyEl.appendChild(novaImg);
+
+        if (atualEl.classList.contains("atributo-status")) {
+            if(atualEl.dataset.tipo == 0)
+                jogadores[vez].vida--;
+            else if(atualEl.dataset.tipo == 1)
+                jogadores[vez].agua--;
+            else if(atualEl.dataset.tipo == 2)
+                jogadores[vez].defesa--;
+            else if(atualEl.dataset.tipo == 3)
+                jogadores[vez].dinheiro--;
+
+            atualizaHTMLJogador(jogadores[vez]);
+
+            novaImg.dataset.origem = "barra";
+
+            atNode = document.querySelectorAll(".fixo");
+
+            for (let i = 0; i < atNode.length; i++) {
+                atNode[i].addEventListener("mousedown", geraAt);
+                atNode[i].style.cursor = "grab";
+            }
+        }
+        else {
+            novaImg.dataset.origem = "campo";
+        }
+
+        novaImg.style.cursor = "grabbing";
+        novaImg.style.position = "fixed";
+        novaImg.draggable = false;
+        novaImg.style.left = xInicial + 'px';
+        novaImg.style.top = yInicial + 'px';
+        novaImg.dataset.tipo = tipoAtributo;
+
+        bodyEl.style.userSelect = "none";
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", paraAt);
+    }
+}
+
+function moveAt(e) {
+    let img = document.querySelector(".mov-img");
+
+    xInicial = e.clientX - 15;
+    yInicial = e.clientY - 15;
+
+    img.style.left = xInicial + 'px';
+    img.style.top = yInicial + 'px';
+}
+
+function checaBarra(e) {
+    let elAtual = e.currentTarget;
+    for (let i = 0; i < 4; i++) {
+        let tipoAtual = checaAtributo(i);
+        if (elAtual.id == `p1-quantia-${tipoAtual}`) {
+            barraEmHover = i;
+            console.log(barraEmHover);
+            break;
+        }
+    }
+}
+
+function paraAt() {
+    let img = document.querySelector(".mov-img");
+    let tipoImgAtual = img.dataset.tipo;
+
+    if (Number(tipoImgAtual) == barraEmHover && img.dataset.origem != "barra") {
+        if(tipoImgAtual == 0)
+            jogadores[vez].vida++;
+        else if(tipoImgAtual == 1)
+            jogadores[vez].agua++;
+        else if(tipoImgAtual == 2)
+            jogadores[vez].defesa++;
+        else if(tipoImgAtual == 3)
+            jogadores[vez].dinheiro++;
+
+        atualizaHTMLJogador(jogadores[vez]);
+
+        atNode = document.querySelectorAll(".fixo");
+
+        for (let i = 0; i < atNode.length; i++) {
+            atNode[i].addEventListener("mousedown", geraAt);
+            atNode[i].style.cursor = "grab";
+        }
+    }
+
+    bodyEl.removeChild(img);
+    bodyEl.style.userSelect = "auto";
+
+    elDragging = false;
+
+    document.removeEventListener("mousemove", moveAt);
+    document.removeEventListener("mouseup", paraAt);
 }
 
 for (let i = 0; i < trocaAtNode.length; i++) {
-    trocaAtNode[i].addEventListener("mousedown", (e) => moveAt(e))
+    trocaAtNode[i].addEventListener("mousedown", geraAt);
 }
+
+for (let i = 0; i < atNode.length; i++) {
+    atNode[i].addEventListener("mousedown", geraAt);
+    atNode[i].style.cursor = "grab";
+}
+
+for (let i = 0; i < barraNode.length; i++) {
+    barraNode[i].addEventListener("mouseover", checaBarra);
+}
+
+console.log(barraNode[0]);

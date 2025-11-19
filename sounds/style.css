@@ -10,7 +10,7 @@ body {
 }
 
 #container {
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -30,13 +30,12 @@ header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    flex: 1 1 auto;
+    flex: 1 1 260px;
 }
 
 #outros-players div {
     display: flex;
     padding: 5px;
-    width: 260px;
 }
 
 .player-portrait {
@@ -65,6 +64,7 @@ nav h1 {
 .barra-atributo {
     display: flex;
     justify-content: space-around;
+
     margin: 0.5em;
     padding: 3px;
     background-color: #414141;
@@ -98,7 +98,6 @@ nav h1 {
     width: 20%;
     height: 100%;
     border: 1px solid rgb(32, 32, 32);
-    cursor: grab;
 }
 
 #troca-vida {
