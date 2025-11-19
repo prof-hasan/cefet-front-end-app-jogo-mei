@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="">
@@ -57,37 +60,40 @@
                 <h1 id="p1-nome">Player name</h1>
                 <img src="imgs/ferro.png" alt="" class="carta-img">
                 <span id="player-life">
-                    <p>Saúde:</p>
+                    <p class="atributo-label">Saúde:</p>
                     <div class="barra-atributo" id="p1-quantia-life">
                         <p></p>
                     </div>
                 </span>
                 <span id="player-water">
-                    <p>Disponibilidade hídrica:</p>
+                    <p class="atributo-label">Disponibilidade hídrica:</p>
                     <div class="barra-atributo" id="p1-quantia-water">
                         <p></p>
                     </div>
                 </span>
                 <span id="player-defense">
-                    <p>Defesa climática:</p>
+                    <p class="atributo-label">Defesa climática:</p>
                     <div class="barra-atributo" id="p1-quantia-defense">
                         <p></p>
                     </div>
                 </span>
                 <span id="player-money">
-                    <p>Disponibilidade monetária:</p>
+                    <p class="atributo-label">Disponibilidade monetária:</p>
                     <div class="barra-atributo" id="p1-quantia-money">
                         <p></p>
                     </div>
                 </span>
 
-                <button id="botao-passa">Passar a vez</button>
+                <button id="botao-passa">Passar Turno</button>
 
                 <div id="troca-atributos">
                     <div id="troca-vida" class="troca-status" data-tipo="0"></div>
                     <div id="troca-agua" class="troca-status" data-tipo="1"></div>
                     <div id="troca-defesa" class="troca-status" data-tipo="2"></div>
                     <div id="troca-dinheiro" class="troca-status" data-tipo="3"></div>
+                </div>
+                <div id="descarta-atributos">
+                    <div></div>
                 </div>
             </nav>
             <main>

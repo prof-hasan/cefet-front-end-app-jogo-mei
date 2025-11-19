@@ -7,8 +7,6 @@
 
 body {
     margin: 0;
-    user-select: none;
-    font-family: Google Sans Flex;
 }
 
 #container {
@@ -32,24 +30,19 @@ header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: center;
-    flex: 1 1 auto;
+    flex: 1 1 260px;
 }
 
 #outros-players div {
     display: flex;
-    align-items: center;
     padding: 5px;
-    width: 280px;
 }
 
 .player-portrait {
     border-radius: 10px;
     width: 6em;
-    height: 6em;
     scale: 100%;
     margin: 0 5px;
-    border: 2px solid rgb(212, 162, 100);
 }
 
 nav {
@@ -61,35 +54,26 @@ nav h1 {
     text-align: center;
 }
 
-.atributo-label {
-    text-align: center;
-    font-size: 1.5em;
-}
-
 .carta-img {
     display: block;
     margin: 1em auto;
     width: 70%;
-    height: 31%;
     border-radius: 10px;
 }
 
 .barra-atributo {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+
     margin: 0.5em;
     padding: 3px;
     background-color: #414141;
     border-radius: 30px;
-    height: 3em;
 }
 
 .atributo-status {
-    height: 1.9em;
     width: 1.9em;
     border-radius: 50%;
-    user-select: none;
 }
 
 #botao-passa {
@@ -98,9 +82,6 @@ nav h1 {
     margin: 1em auto;
     border-radius: 10px;
     padding: 5px;
-    position: fixed;
-    right: 2em;
-    bottom: 2em;
 }
 
 #troca-atributos {
@@ -109,19 +90,7 @@ nav h1 {
     flex-wrap: wrap;
     height: 50px;
     gap: 1em;
-    justify-content: space-between;
-}
-
-#descarta-atributos {
-    height: 50px;
-    margin: 1em;
-}
-
-#descarta-atributos div {
-    background-color: #414141;
-    width: 100%;
-    height: 100%;
-    border: 1px solid rgb(32, 32, 32);
+    justify-content: space-evenly;
 }
 
 .troca-status {

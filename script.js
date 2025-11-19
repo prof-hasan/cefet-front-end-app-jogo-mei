@@ -6,18 +6,52 @@ let bodyEl = document.querySelector("body");
 
 let barraNode = document.querySelectorAll(".barra-atributo");
 
+
+//Banco de personagens do jogo
 let personagens = [
-    ["Roberta", [7, 4, 6, 3]],
-    ["Hasan", [10, 10, 10, 10]],
-    ["João", [2, 7, 7, 10]],
-    ["Janaína", [6, 9, 5, 2]],
-    ["Nicolas", [4, 5, 2, 6]]
+    {
+        nome: "Roberta",
+        vida: 7,
+        agua: 4,
+        defesa: 6,
+        dinheiro: 3
+    },
+    {
+        nome: "Hasan",
+        vida: 10,
+        agua: 10,
+        defesa: 10,
+        dinheiro: 10
+    },
+    {
+        nome: "João",
+        vida: 2,
+        agua: 7,
+        defesa: 7,
+        dinheiro: 10
+    },
+    {
+        nome: "Janaína",
+        vida: 6,
+        agua: 9,
+        defesa: 5,
+        dinheiro: 2
+    },
+    {
+        nome: "Nicolas",
+        vida: 4,
+        agua: 5,
+        defesa: 2,
+        dinheiro: 6
+    },
 ];
 
 let vez = 0;
 
 let jogadores = [];
 
+
+//Checa de qual atributo se trata dependendo do número informado
 function checaAtributo(tipo) {
     switch (tipo) {
         case 0:
@@ -38,37 +72,48 @@ let modoDaltonicoAtivo = false;
 let botaoModoDaltonicoEl = document.querySelector('#botao-daltonismo');
 
 botaoModoDaltonicoEl.addEventListener('click', () => {
-    if(modoDaltonicoAtivo){
+    if (modoDaltonicoAtivo) {
         modoDaltonicoAtivo = false;
     }
-    else{
+    else {
         modoDaltonicoAtivo = true;
     }
 
     atualizaHTMLJogador(jogadores[vez]);
+
+    atNode = document.querySelectorAll(".fixo");
+
+    for (let i = 0; i < atNode.length; i++) {
+        atNode[i].addEventListener("mousedown", geraAt);
+        atNode[i].style.cursor = "grab";
+    }
 })
 
+//Troca os elementos dentro da barra de atributo
+//vai anexando varios elementos pela concatenação de strings para colocar dentro do innerHTML da barra
 function rotuloInnerAtributo(tipo, valorAtributo) {
     let rotulo = "";
     let atributoA = checaAtributo(tipo);
     
     for (let i = 0; i < valorAtributo; i++) {
         if (modoDaltonicoAtivo){
-            rotulo = rotulo + `<img src="imgs/${atributoA}dotdaltonico.png" class="atributo-status fixo" data-tipo="${tipo}">`;
+            rotulo = rotulo + `<img src="imgs/${atributoA}dotdaltonico.png" class="atributo-status fixo" data-tipo="${tipo}" draggable="false">`;
         }
         else {
-            rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status fixo" data-tipo="${tipo}">`;
+            rotulo = rotulo + `<img src="imgs/${atributoA}dot.png" class="atributo-status fixo" data-tipo="${tipo}" draggable="false">`;
         }
     }
 
     return rotulo;
 }
 
+
+//Checa se já existe um jogador com um determinado personagem
 function checaJogadores(person) {
     let vetorSize = jogadores.length;
 
     for (let i = 0; i < vetorSize; i++) {
-        if (person[0] == jogadores[i].nome) {
+        if (person.nome == jogadores[i].nome) {
             return 1;
         }
     }
@@ -76,6 +121,7 @@ function checaJogadores(person) {
     return 0;
 }
 
+//Escolhe e retorna um personagem a partir de um número aleatório
 function escolhePersonagem() {
     let rNumber;
     let personagemAtual;
@@ -116,6 +162,7 @@ function escolhePersonagem() {
     }
 }
 
+//Cria e retorna o objeto do jogador
 function criaJogador(nJogador) {
     let personagemA = escolhePersonagem();
 
@@ -123,16 +170,17 @@ function criaJogador(nJogador) {
         personagem: personagemA,
 
         num: nJogador,
-        nome: personagemA[0],
-        vida: personagemA[1][0],
-        agua: personagemA[1][1],
-        defesa: personagemA[1][2],
-        dinheiro: personagemA[1][3],
+        nome: personagemA.nome,
+        vida: personagemA.vida,
+        agua: personagemA.agua,
+        defesa: personagemA.defesa,
+        dinheiro: personagemA.dinheiro,
     }
 
     return jogador;
 }
 
+//Atualiza o innerHTML das barras de atributo do jogador no turno atual com o rotulo retornado pela função rotuloInnerHTML
 function atualizaHTMLJogador(jogador) {
     let jogadorBarraLife = document.querySelector(`#p${jogador.num}-quantia-life`);
     let jogadorBarraWater = document.querySelector(`#p${jogador.num}-quantia-water`);
@@ -141,22 +189,29 @@ function atualizaHTMLJogador(jogador) {
     let jogadorName = document.querySelector(`#p${jogador.num}-nome`);
 
     if (jogador.num === 1) {
+        let labelAtNode = document.querySelectorAll(".atributo-label");
+
+        labelAtNode[0].innerHTML = `Saúde: ${jogador.vida}/10`;
+        labelAtNode[1].innerHTML = `Disp. hídrica: ${jogador.agua}/10`;
+        labelAtNode[2].innerHTML = `Def. climática: ${jogador.defesa}/10`;
+        labelAtNode[3].innerHTML = `Disp. monetária: ${jogador.dinheiro}/10`;
+
         jogadorBarraLife.innerHTML = rotuloInnerAtributo(0, jogador.vida);
         jogadorBarraWater.innerHTML = rotuloInnerAtributo(1, jogador.agua);
         jogadorBarraDefense.innerHTML = rotuloInnerAtributo(2, jogador.defesa);
         jogadorBarraMoney.innerHTML = rotuloInnerAtributo(3, jogador.dinheiro);
     }
     else {
-        jogadorBarraLife.innerHTML = `Saúde: ${jogador.vida}`;
-        jogadorBarraWater.innerHTML = `Disp. Hídrica: ${jogador.agua}`;
-        jogadorBarraDefense.innerHTML = `Def. Climática: ${jogador.defesa}`;
-        jogadorBarraMoney.innerHTML = `Disp. Monetária: ${jogador.dinheiro}`;
+        jogadorBarraLife.innerHTML = `Saúde: ${jogador.vida}/10`;
+        jogadorBarraWater.innerHTML = `Disp. Hídrica: ${jogador.agua}/10`;
+        jogadorBarraDefense.innerHTML = `Def. Climática: ${jogador.defesa}/10`;
+        jogadorBarraMoney.innerHTML = `Disp. Monetária: ${jogador.dinheiro}/10`;
     }
 
     jogadorName.innerHTML = jogador.nome;
 }
 
-//Passagem turnos=
+//Passagem turnos
 
 function passaVez() {
     vez++;
@@ -206,7 +261,7 @@ function retiraAtributo() {
 
 function geraAt(e) {
     if (!elDragging) {
-        console.log("Gerou");
+        bodyEl.style.userSelect = "none";
         elDragging = true;
         let atualEl = e.currentTarget;
 
@@ -248,24 +303,30 @@ function geraAt(e) {
 
             for (let i = 0; i < atNode.length; i++) {
                 atNode[i].addEventListener("mousedown", geraAt);
-                atNode[i].style.cursor = "grab";
             }
         }
         else {
             novaImg.dataset.origem = "campo";
+            for (let i = 0; i < atNode.length; i++) {
+                atNode[i].style.cursor = "";
+            }
+
         }
 
-        novaImg.style.cursor = "grabbing";
+        bodyEl.style.cursor = "grabbing";
         novaImg.style.position = "fixed";
         novaImg.draggable = false;
         novaImg.style.left = xInicial + 'px';
         novaImg.style.top = yInicial + 'px';
         novaImg.dataset.tipo = tipoAtributo;
-
-        bodyEl.style.userSelect = "none";
+        novaImg.style.pointerEvents = "none";
 
         document.addEventListener("mousemove", moveAt);
         document.addEventListener("mouseup", paraAt);
+
+        for (let i = 0; i < trocaAtNode.length; i++) {
+            trocaAtNode[i].style.cursor = "";
+        }
     }
 }
 
@@ -295,33 +356,38 @@ function paraAt() {
     let img = document.querySelector(".mov-img");
     let tipoImgAtual = img.dataset.tipo;
 
-    if (Number(tipoImgAtual) == barraEmHover && img.dataset.origem != "barra") {
-        if(tipoImgAtual == 0)
+    if (Number(tipoImgAtual) == barraEmHover) {
+        if(tipoImgAtual == 0 && jogadores[vez].vida < 10)
             jogadores[vez].vida++;
-        else if(tipoImgAtual == 1)
+        else if(tipoImgAtual == 1 && jogadores[vez].agua < 10)
             jogadores[vez].agua++;
-        else if(tipoImgAtual == 2)
+        else if(tipoImgAtual == 2 && jogadores[vez].defesa < 10)
             jogadores[vez].defesa++;
-        else if(tipoImgAtual == 3)
+        else if(tipoImgAtual == 3 && jogadores[vez].dinheiro < 10)
             jogadores[vez].dinheiro++;
 
         atualizaHTMLJogador(jogadores[vez]);
 
         atNode = document.querySelectorAll(".fixo");
-
-        for (let i = 0; i < atNode.length; i++) {
-            atNode[i].addEventListener("mousedown", geraAt);
-            atNode[i].style.cursor = "grab";
-        }
     }
 
     bodyEl.removeChild(img);
-    bodyEl.style.userSelect = "auto";
+
+    bodyEl.style.cursor = "auto";
 
     elDragging = false;
 
     document.removeEventListener("mousemove", moveAt);
     document.removeEventListener("mouseup", paraAt);
+
+    for (let i = 0; i < trocaAtNode.length; i++) {
+        trocaAtNode[i].style.cursor = "grab";
+    }
+
+    for (let i = 0; i < atNode.length; i++) {
+            atNode[i].addEventListener("mousedown", geraAt);
+            atNode[i].style.cursor = "grab";
+        }
 }
 
 for (let i = 0; i < trocaAtNode.length; i++) {
@@ -335,6 +401,14 @@ for (let i = 0; i < atNode.length; i++) {
 
 for (let i = 0; i < barraNode.length; i++) {
     barraNode[i].addEventListener("mouseover", checaBarra);
+    barraNode[i].addEventListener("mouseout", () => {
+        barraEmHover = null;
+        console.log(barraEmHover);
+    });
+}
+
+for (let i = 0; i < trocaAtNode.length; i++) {
+    trocaAtNode[i].style.cursor = "grab";
 }
 
 console.log(barraNode[0]);
