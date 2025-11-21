@@ -10,11 +10,60 @@ let barraNode = document.querySelectorAll(".barra-atributo");
 //Banco de personagens do jogo
 let personagens = [
     {
-        nome: "Roberta",
-        vida: 7,
+        nome: "Dandara",
+        vida: 6,
         agua: 4,
-        defesa: 6,
-        dinheiro: 3
+        defesa: 2,
+        dinheiro: 4,
+        local: "Periferia"
+    },
+    {
+        nome: "Gabriel",
+        vida: 4,
+        agua: 8,
+        defesa: 9,
+        dinheiro: 7,
+        local: "AreaPriv"
+    },
+    {
+        nome: "Luanda",
+        vida: 8,
+        agua: 4,
+        defesa: 3,
+        dinheiro: 2,
+        local: "Quilombo"
+    },
+    {
+        nome: "Kaike",
+        vida: 9,
+        agua: 6,
+        defesa: 5,
+        dinheiro: 2,
+        local: "Aldeia"
+    },
+    {
+        nome: "Maria",
+        vida: 7,
+        agua: 2,
+        defesa: 3,
+        dinheiro: 2,
+        local: "Periferia"
+    },
+    {
+        nome: "Adriana",
+        vida: 5,
+        agua: 4,
+        defesa: 4,
+        dinheiro: 4,
+        local: ""
+    },
+    {
+        nome: "Tereza",
+        vida: 7,
+        agua: 7,
+        defesa: 5,
+        dinheiro: 3,
+        local: ""
     },
     {
         nome: "Hasan",
@@ -22,27 +71,6 @@ let personagens = [
         agua: 10,
         defesa: 10,
         dinheiro: 10
-    },
-    {
-        nome: "João",
-        vida: 2,
-        agua: 7,
-        defesa: 7,
-        dinheiro: 10
-    },
-    {
-        nome: "Janaína",
-        vida: 6,
-        agua: 9,
-        defesa: 5,
-        dinheiro: 2
-    },
-    {
-        nome: "Nicolas",
-        vida: 4,
-        agua: 5,
-        defesa: 2,
-        dinheiro: 6
     },
 ];
 
@@ -129,32 +157,44 @@ function escolhePersonagem() {
     while (1) {
         rNumber = Math.random();
 
-        if (rNumber === 0 || rNumber < 0.2) {
+        if (rNumber === 0 || rNumber < 1 / 7) {
             personagemAtual = personagens[0];
             if (!checaJogadores(personagemAtual)) {
                 return personagemAtual;
             }
         }
-        else if(rNumber >= 0.2 && rNumber < 0.4) {
+        else if(rNumber >= 1 / 7 && rNumber < 1 / 7 * 2) {
             personagemAtual = personagens[1];
             if (!checaJogadores(personagemAtual)) {
                 return personagemAtual;
             }
         }
-        else if(rNumber >= 0.4 && rNumber < 0.6) {
+        else if(rNumber >= 1 / 7 * 2 && rNumber < 1 / 7 * 3) {
             personagemAtual = personagens[2];
             if (!checaJogadores(personagemAtual)) {
                 return personagemAtual;
             }
         }
-        else if(rNumber >= 0.6 && rNumber < 0.8) {
+        else if(rNumber >= 1 / 7 * 3 && rNumber < 1 / 7 * 4) {
             personagemAtual = personagens[3];
             if (!checaJogadores(personagemAtual)) {
                 return personagemAtual;
             }
         }
-        else if(rNumber >= 0.8 && rNumber < 1) {
+        else if(rNumber >= 1 / 7 * 4 && rNumber < 1 / 7 * 5) {
             personagemAtual = personagens[4];
+            if (!checaJogadores(personagemAtual)) {
+                return personagemAtual;
+            }
+        }
+        else if(rNumber >= 1 / 7 * 5 && rNumber < 1 / 7 * 6) {
+            personagemAtual = personagens[5];
+            if (!checaJogadores(personagemAtual)) {
+                return personagemAtual;
+            }
+        }
+        else if(rNumber >= 1 / 7 * 6 && rNumber < 1) {
+            personagemAtual = personagens[6];
             if (!checaJogadores(personagemAtual)) {
                 return personagemAtual;
             }
@@ -175,6 +215,7 @@ function criaJogador(nJogador) {
         agua: personagemA.agua,
         defesa: personagemA.defesa,
         dinheiro: personagemA.dinheiro,
+        local: personagemA.local
     }
 
     return jogador;
@@ -187,6 +228,7 @@ function atualizaHTMLJogador(jogador) {
     let jogadorBarraDefense = document.querySelector(`#p${jogador.num}-quantia-defense`);
     let jogadorBarraMoney = document.querySelector(`#p${jogador.num}-quantia-money`);
     let jogadorName = document.querySelector(`#p${jogador.num}-nome`);
+    let jogadorImg = document.querySelector(`#p${jogador.num}-img`);
 
     if (jogador.num === 1) {
         let labelAtNode = document.querySelectorAll(".atributo-label");
@@ -208,6 +250,7 @@ function atualizaHTMLJogador(jogador) {
         jogadorBarraMoney.innerHTML = `Disp. Monetária: ${jogador.dinheiro}/10`;
     }
 
+    jogadorImg.src = `imgs/personagens/${jogador.nome}.png`;
     jogadorName.innerHTML = jogador.nome;
 }
 
