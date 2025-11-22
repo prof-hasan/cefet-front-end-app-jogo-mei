@@ -74,7 +74,32 @@ let personagens = [
     },
 ];
 
+//Banco de cartas de evento (1 por turno, no começo)
+let cartasEvt = [
+    {
+        nome: "calorE",
+        id: 0
+    },
+    {
+        nome: "poluicaoDA",
+        id: 1
+    },
+    {
+        nome: "queimadaEAN",
+        id: 2
+    },
+    {
+        nome: "surtoDH",
+        id: 3
+    },
+    {
+        nome: "tempestadeCA",
+        id: 4
+    }
+];
+
 let vez = 0;
+let turno = 0;
 
 let jogadores = [];
 
@@ -202,6 +227,28 @@ function escolhePersonagem() {
     }
 }
 
+function sorteiaCartaEvt() {
+    let rNumber;
+
+    rNumber = Math.random();
+
+    if (rNumber === 0 || rNumber < 1 / 5) {
+        return cartasEvt[0];
+    }
+    else if(rNumber >= 1 / 5 && rNumber < 1 / 5 * 2) {
+        return cartasEvt[1];
+    }
+    else if(rNumber >= 1 / 5 * 2 && rNumber < 1 / 5 * 3) {
+        return cartasEvt[2];
+    }
+    else if(rNumber >= 1 / 5 * 3 && rNumber < 1 / 5 * 4) {
+        return cartasEvt[3];
+    }
+    else if(rNumber >= 1 / 5 * 4 && rNumber < 1) {
+        return cartasEvt[4];
+    }
+}
+
 //Cria e retorna o objeto do jogador
 function criaJogador(nJogador) {
     let personagemA = escolhePersonagem();
@@ -254,13 +301,70 @@ function atualizaHTMLJogador(jogador) {
     jogadorName.innerHTML = jogador.nome;
 }
 
+let cartaEvtDisplay = 0;
+
+function ativaCartaEvt(carta) {
+    let containerCarta = document.createElement("div");
+    containerCarta.classList.add("cartaevt-container");
+    bodyEl.appendChild(containerCarta);
+
+    let cartaEvtFrente = document.createElement("img");
+    cartaEvtFrente.classList.add("cartaevt-frente");
+    cartaEvtFrente.src = `imgs/cartasEvts/SQPlogo.png`;
+    containerCarta.appendChild(cartaEvtFrente);
+
+    let cartaEvtTras = document.createElement("img");
+    cartaEvtTras.classList.add("cartaevt-tras");
+    cartaEvtTras.src = `imgs/cartasEvts/${carta.nome}.png`;
+    containerCarta.appendChild(cartaEvtTras);
+
+    setTimeout(() => {
+        containerCarta.style.top = "50%";
+        containerCarta.style.transform = "translate(-50%, -50%)";
+        containerCarta.style.transition = "all 0.5s ease-in-out";
+    }, 300);
+
+    cartaEvtDisplay = 1;
+
+    setTimeout(() => {
+        containerCarta.style.transform = "translate(-50%, -50%) rotateY(180deg)";
+    }, 1000);
+
+    let funcaoRemove = function() {
+        if (cartaEvtDisplay == 1) {
+            
+            containerCarta.style.transform = "translate(-50%, 0) rotateY(180deg)";
+            containerCarta.style.top = "150%";
+
+            setTimeout(() => {
+                bodyEl.removeChild(containerCarta);
+                bodyEl.removeEventListener("dblclick", funcaoRemove);
+                cartaEvtDisplay = 0;
+            }, 800);
+        }
+    };
+
+    setTimeout(() => {
+        bodyEl.addEventListener("dblclick", funcaoRemove);
+    }, 1500);
+
+    setTimeout(funcaoRemove, 20000);
+}
+
 //Passagem turnos
+
+let cartaEvtAtual = sorteiaCartaEvt();
+ativaCartaEvt(cartaEvtAtual);
+
 
 function passaVez() {
     vez++;
     console.log(vez);
-    if (vez === 5)
+    if (vez === 5) {
         vez = 0;
+        cartaEvtAtual = sorteiaCartaEvt();
+        ativaCartaEvt(cartaEvtAtual);
+    }
 
     for (let i = 0; i < 5; i++) {
         jogadores[i].num--;
@@ -301,6 +405,8 @@ let barraEmHover = null;
 function retiraAtributo() {
 
 }
+
+//Geraçao da img dos atributos, retirada e reposicionamento
 
 function geraAt(e) {
     if (!elDragging) {
