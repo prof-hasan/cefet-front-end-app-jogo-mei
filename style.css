@@ -6,28 +6,31 @@
 }
 
 body {
+    min-height: 100vh;
     margin: 0;
     user-select: none;
     font-family: Google Sans Flex;
+    position: relative;
+    perspective: 1000px;
 }
 
 #container {
-    min-height: 100vh;
-    height: auto;
-    /*pro negocio nao quebrar*/
+    height: 100vh;
     position: relative;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: auto 4fr 0.3fr;
+    grid-template-rows: 0.4fr 4fr 0.3fr;
+    /*Acho que deixar o primeiro do rows em auto não seja a melhor das opções, acaba que o tamanho da barra lateral fica 
+    mudando ao longo do jogo, aí fica meio paia*/
     grid-template-areas: 
         "nav header"
         "nav main"
-        "footer footer";
+        "footer footer"
 }
 
 header {
     grid-area: header;
-    background-color: rgb(187, 142, 88);
+    background-color: #d4b170;
 }
 
 #outros-players {
@@ -46,19 +49,21 @@ header {
 }
 
 .player-portrait {
-    object-fit: cover;
-    /*object fit p imagem nao distorcer*/     
     border-radius: 10px;
+    object-fit: cover;
     width: 6em;
     height: 6em;
     scale: 100%;
     margin: 0 5px;
-    border: 2px solid rgb(212, 162, 100);
+    border: 2px solid #391e0a;
 }
 
 nav {
     grid-area: nav;
-    background-color: rgb(187, 142, 88);
+    background-color: #d4b170;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 nav h1 {
@@ -74,9 +79,10 @@ nav h1 {
     display: block;
     margin: 1em auto;
     width: 16.5em;
-    height: 12.6em;
+    height: 16.5em;
+    object-fit: cover;
     border-radius: 10px;
-    border: 2px solid rgb(212, 162, 100);
+    border: 2px solid #391e0a;
 }
 
 .barra-atributo {
@@ -88,6 +94,7 @@ nav h1 {
     background-color: #414141;
     border-radius: 30px;
     height: 3em;
+    border: 2px solid #391e0a;
 }
 
 .atributo-status {
@@ -95,17 +102,22 @@ nav h1 {
     width: 1.9em;
     border-radius: 50%;
     user-select: none;
+    background-size: contain;
 }
 
 #botao-passa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 2em;
     display: block;
-    margin: 1em auto;
-    border-radius: 10px;
-    padding: 5px;
+    border-radius: 50%;
+    height: 4.5em;
+    width: 4.5em;
     position: fixed;
-    right: 2em;
+    right: 1em;
     bottom: 2em;
+    background-color: #d4b170;
 }
 
 #troca-atributos {
@@ -134,23 +146,23 @@ nav h1 {
     display: inline;
     width: 20%;
     height: 100%;
-    border: 1px solid rgb(32, 32, 32);
+    border: 1px solid #391e0a;
 }
 
 #troca-vida {
-    background-color: red;
+    background-color: #E33232;
 }
 
 #troca-agua {
-    background-color: blue;
+    background-color: #2258A3;
 }
 
 #troca-defesa {
-    background-color: grey;
+    background-color: #8C8C8C;
 }
 
 #troca-dinheiro {
-    background-color: yellow;
+    background-color: #E8C93C;
 }
 
 main {
@@ -218,11 +230,49 @@ footer{
     white-space: nowrap;
 }
 
+.cartaevt-container {
+    position: fixed;
+    top: 200%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 32%;
+    height: 90%;
+    border-radius: 20px;
+    transform-style: preserve-3d;
+    transition: all 0.8s ease-in-out;
+}
+
+.cartaevt-frente {
+    border-radius: 20px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.cartaevt-tras {
+    border-radius: 20px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+
+@media (max-width: 1450px) {
+    body {
+        min-height: 100vh;
+    }
+
+    #container {
+        min-height: 100vh;
+    }
+}
 
 @media (max-width: 550px) {
     #container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 0.4fr 1fr 0.3fr;
+        grid-template-rows: auto 0.4fr 2fr 0.3fr;
         grid-template-areas: 
             "nav"
             "header"
@@ -231,6 +281,7 @@ footer{
     }
 
     /*aq, as bolinhas vao pro main ou p esse quadradao cinsa? (nao tenho a ultima letra do alfabeto)*/
+    /*-> As bolinhas ficam na nav, na main vai ter a parte do mapa*/
 
     #botao-passa {
         font-size: 1em;

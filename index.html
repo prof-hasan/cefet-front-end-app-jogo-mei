@@ -57,14 +57,16 @@
                 </section>
             </header>
             <nav>
-                <h1 id="p1-nome">Player name</h1>
-                <img src="imgs/ferro.png" alt="" id="p1-img" class="carta-img">
-                <span id="player-life">
-                    <p class="atributo-label">Saúde:</p>
-                    <div class="barra-atributo" id="p1-quantia-life">
-                        <p></p>
-                    </div>
-                </span>
+                <div>
+                    <h1 id="p1-nome">Player name</h1>
+                    <img src="imgs/ferro.png" alt="" id="p1-img" class="carta-img">
+                    <span id="player-life">
+                        <p class="atributo-label">Saúde:</p>
+                        <div class="barra-atributo" id="p1-quantia-life">
+                            <p></p>
+                        </div>
+                    </span>
+                </div>
                 <span id="player-water">
                     <p class="atributo-label">Disponibilidade hídrica:</p>
                     <div class="barra-atributo" id="p1-quantia-water">
@@ -84,8 +86,6 @@
                     </div>
                 </span>
 
-                <button id="botao-passa">Passar Turno</button>
-
                 <div id="troca-atributos">
                     <div id="troca-vida" class="troca-status" data-tipo="0"></div>
                     <div id="troca-agua" class="troca-status" data-tipo="1"></div>
@@ -96,13 +96,14 @@
                     <div></div>
                 </div>
             </nav>
+            <button id="botao-passa"><p>Passar Turno</p></button>
             <main>
                 <p>main</p>
             </main>
             <footer>
                 <p>footer</p>
                     <label id="modo-daltonismo" for="botao-daltonismo">
-                        <p>Modo de Daltonismo (Em desenvolvimento): </p>
+                        <p>Modo de Daltonismo (Em desenvolvimento):</p>
                         <input id="botao-daltonismo" type="checkbox">
                     </label>
             </footer>

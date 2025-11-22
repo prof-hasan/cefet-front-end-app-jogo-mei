@@ -318,6 +318,8 @@ function ativaCartaEvt(carta) {
     cartaEvtTras.src = `imgs/cartasEvts/${carta.nome}.png`;
     containerCarta.appendChild(cartaEvtTras);
 
+    bodyEl.style.overflowY = "hidden";
+
     setTimeout(() => {
         containerCarta.style.top = "50%";
         containerCarta.style.transform = "translate(-50%, -50%)";
@@ -340,6 +342,7 @@ function ativaCartaEvt(carta) {
                 bodyEl.removeChild(containerCarta);
                 bodyEl.removeEventListener("dblclick", funcaoRemove);
                 cartaEvtDisplay = 0;
+                bodyEl.style.overflowY = "auto";
             }, 800);
         }
     };
