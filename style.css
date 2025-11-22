@@ -6,30 +6,28 @@
 }
 
 body {
-    height: 100vh;
     margin: 0;
     user-select: none;
     font-family: Google Sans Flex;
-    position: relative;
-    perspective: 1000px;
-    overflow-y: hidden;
 }
 
 #container {
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
+    /*pro negocio nao quebrar*/
     position: relative;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: 0.4fr 4fr 0.3fr;
+    grid-template-rows: auto 4fr 0.3fr;
     grid-template-areas: 
         "nav header"
         "nav main"
-        "footer footer"
+        "footer footer";
 }
 
 header {
     grid-area: header;
-    background-color: #d1ac66;
+    background-color: rgb(187, 142, 88);
 }
 
 #outros-players {
@@ -48,9 +46,11 @@ header {
 }
 
 .player-portrait {
+    object-fit: cover;
+    /*object fit p imagem nao distorcer*/     
     border-radius: 10px;
     width: 6em;
-    height: 5em;
+    height: 6em;
     scale: 100%;
     margin: 0 5px;
     border: 2px solid rgb(212, 162, 100);
@@ -58,7 +58,7 @@ header {
 
 nav {
     grid-area: nav;
-    background-color: #d1ac66;
+    background-color: rgb(187, 142, 88);
 }
 
 nav h1 {
@@ -95,7 +95,6 @@ nav h1 {
     width: 1.9em;
     border-radius: 50%;
     user-select: none;
-    background-size: contain;
 }
 
 #botao-passa {
@@ -139,19 +138,19 @@ nav h1 {
 }
 
 #troca-vida {
-    background-color: #E33232;
+    background-color: red;
 }
 
 #troca-agua {
-    background-color: #2258A3;
+    background-color: blue;
 }
 
 #troca-defesa {
-    background-color: #8C8C8C;
+    background-color: grey;
 }
 
 #troca-dinheiro {
-    background-color: #E8C93C;
+    background-color: yellow;
 }
 
 main {
@@ -219,29 +218,38 @@ footer{
     white-space: nowrap;
 }
 
-.cartaevt-container {
-    position: fixed;
-    top: 200%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 32%;
-    height: 90%;
-    border-radius: 20px;
-    transform-style: preserve-3d;
-    transition: all 0.8s ease-in-out;
-}
 
-.cartaevt-frente {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
+@media (max-width: 550px) {
+    #container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 0.4fr 1fr 0.3fr;
+        grid-template-areas: 
+            "nav"
+            "header"
+            "main"
+            "footer";
+    }
 
-.cartaevt-tras {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    transform: rotateY(180deg);
+    /*aq, as bolinhas vao pro main ou p esse quadradao cinsa? (nao tenho a ultima letra do alfabeto)*/
+
+    #botao-passa {
+        font-size: 1em;
+        right: 1em;
+        bottom: 1em;
+    }
+
+    .atributo-label {
+        font-size: 1em;
+    }
+
+    #outros-players div {
+        font-size: 0.9em;
+    }
+
+    footer p {
+        font-size: 0.9em;
+    }
+
+    /*esse botao nao deixa caber tudo bonitinho no footer*/
+
 }
