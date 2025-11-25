@@ -98,6 +98,13 @@ let cartasEvt = [
     }
 ];
 
+//Banco de cartas de sorte ou azar
+let cartasSorte {
+    {
+        
+    },
+};
+
 let vez = 0;
 let turno = 0;
 
@@ -359,14 +366,19 @@ function ativaCartaEvt(carta) {
 let cartaEvtAtual = sorteiaCartaEvt();
 ativaCartaEvt(cartaEvtAtual);
 
+let turnosAjuste = -5;
 
 function passaVez() {
-    vez++;
-    console.log(vez);
-    if (vez === 5) {
-        vez = 0;
-        cartaEvtAtual = sorteiaCartaEvt();
-        ativaCartaEvt(cartaEvtAtual);
+    turnosAjuste++;
+    if (!(turnosAjuste < 0)) {
+        vez++;
+        console.log(vez);
+        if (vez === 5) {
+            vez = 0;
+            turnosAjuste = -6;
+            cartaEvtAtual = sorteiaCartaEvt();
+            ativaCartaEvt(cartaEvtAtual);
+        }
     }
 
     for (let i = 0; i < 5; i++) {
