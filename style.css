@@ -73,6 +73,13 @@ nav h1 {
 .atributo-label {
     text-align: center;
     font-size: 1.5em;
+    position: relative;
+    display: inline;
+}
+
+.atributo-saldo {
+    position: absolute;
+    right: -20%;
 }
 
 .carta-img {
@@ -103,6 +110,10 @@ nav h1 {
     border-radius: 50%;
     user-select: none;
     background-size: contain;
+}
+
+.player-atributo {
+    text-align: center;
 }
 
 #botao-passa {
@@ -237,21 +248,29 @@ footer{
     transform: translate(-50%, 0);
     width: 32%;
     height: 90%;
-    border-radius: 20px;
     transform-style: preserve-3d;
     transition: all 0.8s ease-in-out;
 }
 
-.cartaevt-frente {
-    border-radius: 20px;
+.cartasorte-container {
+    position: fixed;
+    top: 200%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 44%;
+    height: 80%;
+    transform-style: preserve-3d;
+    transition: all 0.8s ease-in-out;
+}
+
+.carta-frente {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
 }
 
-.cartaevt-tras {
-    border-radius: 20px;
+.carta-tras {
     position: absolute;
     width: 100%;
     height: 100%;
