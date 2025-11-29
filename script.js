@@ -106,26 +106,31 @@ let cartasEvt = [
     {
         nome: "calorE",
         id: 0,
+        descricao: "Uma onda de calor atinge o território. O acesso desigual à água e à infraestrutura agrava os efeitos do clima.",
 
     },
     {
         nome: "poluicaoDA",
         id: 1,
+        descricao: "A poluição do ar, causada por atividades industriais, agrava condições dos moradores em regiões densamente povoadas.",
 
     },
     {
         nome: "queimadaEAN",
         id: 2,
+        descricao: "Um incêndio florestal descontrolado impacta a qualidade do ar e da água.",
 
     },
     {
         nome: "surtoDH",
         id: 3,
+        descricao: "A contaminação das águas provoca um surto de doenças.",
 
     },
     {
         nome: "tempestadeCA",
         id: 4,
+        descricao: "Chuvas intensas provocam alagamentos e deslizamentos. Áreas com pouca infraestrutura sofrem mais.",
 
     }
 ];
@@ -459,6 +464,7 @@ function ativaCarta(carta, tipo) {
         cartaTras.src = `imgs/cartasEvts/${carta.nome}.png`;
         cartaTras.style.borderRadius = "20px";
         cartaFrente.style.borderRadius = "20px";
+        playText(carta.descricao);
     }
     else {
         cartaTras.src = `imgs/cartasSA/SorteouAzar-${carta.id}.png`;
@@ -522,6 +528,7 @@ ativaCarta(cartaEvtAtual, 1);
 let turnosAjuste = -10;
 
 function passaVez() {
+    playText("Passada a vez.")
     if (!cartaDisplay) {
         turnosAjuste++;
 
@@ -588,6 +595,9 @@ function geraAt(e) {
         bodyEl.style.userSelect = "none";
         elDragging = true;
         let atualEl = e.currentTarget;
+
+        playText('segurando');
+        // ALERTA DE TESTE JUMPSCARE
 
         let novaImg = document.createElement("img");
         novaImg.classList.add("atributo-status", "mov-img");
@@ -688,6 +698,9 @@ function paraAt() {
     let img = document.querySelector(".mov-img");
     let tipoImgAtual = img.dataset.tipo;
 
+    playText('parou');
+    //KKKKKKKKKKK ISSO É TESTE
+
     if (Number(tipoImgAtual) == barraEmHover) {
         if(tipoImgAtual == 0 && jogadores[vez].vida < 10) {
             jogadores[vez].vida++;
@@ -758,4 +771,38 @@ for (let i = 0; i < atNode.length; i++) {
     atNode = document.querySelectorAll(".fixo");
     atNode[i].addEventListener("mousedown", geraAt);
     atNode[i].style.cursor = "grab";
+}
+
+/*--- voz ---*/
+
+// AVISOS SOBRE O ÁUDIO!!!!!!!!!!
+// delay enorme pq ele tem que pedir para a pg pra gerar o áudio e esperar ainda ela voltar, tlgd?
+// além disso, a descrição das cartas não funciona até o usuario clicar na pg por causa de uma política aí
+//   4 opções:
+// 1- continuar com o delay
+// 2- atrasar algumas funções pra que fique sincronizado
+// 3- voltar com a voz da hatsune miku, mas sem atraso
+// 4- sei nao 
+
+function playText(texto) {
+    fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
+        },
+        body: JSON.stringify({
+            text: texto
+        })
+    })
+    .then(respostaB => respostaB.blob())
+    .then(resposta => {
+        const audioUrl = URL.createObjectURL(resposta);
+        const audio = new Audio(audioUrl);
+        audio.play();
+    })
+    .catch(error => {
+        console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
+        return Promise.resolve(); 
+    });
 }
