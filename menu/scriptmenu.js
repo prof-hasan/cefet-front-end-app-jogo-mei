@@ -1,7 +1,8 @@
 let palavrasFundoEl = document.querySelectorAll(".palavrafundo");
 let botaoJogarEL = document.querySelector("#jogar");
 
-function jogar(){
+async function jogar(){
+    await playText('Iniciando partida...');
     window.location.href = "../index.html";
 }
 
@@ -55,3 +56,28 @@ botaoVoltarEl.addEventListener("click", () => {
 
     atualizaImagem();
 })
+
+/*--- voz ---*/
+
+function playText(texto) {
+    fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
+        },
+        body: JSON.stringify({
+            text: texto
+        })
+    })
+    .then(respostaB => respostaB.blob())
+    .then(resposta => {
+        const audioUrl = URL.createObjectURL(resposta);
+        const audio = new Audio(audioUrl);
+        audio.play();
+    })
+    .catch(error => {
+        console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
+        return Promise.resolve(); 
+    });
+}
