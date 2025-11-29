@@ -50,3 +50,8 @@ botaoAvancarEl.addEventListener("click", () => {
     atualizaImagem();
 })
 
+botaoVoltarEl.addEventListener("click", () => {
+    imagemAtual = (5 + imagemAtual) % 3;
+
+    atualizaImagem();
+})
