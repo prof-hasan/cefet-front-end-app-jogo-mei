@@ -523,7 +523,9 @@ function respondePergunta(e, tipo, caixaEl) {
         console.log(respostaPlayer, respostaAtributo);
         cartaSorteAtual.efeito();
 
-        bodyEl.removeChild(caixaEl);
+        setTimeout(() => {
+            bodyEl.removeChild(caixaEl);
+        }, 500);
 
         atNode = document.querySelectorAll(".fixo");
 
@@ -965,4 +967,5 @@ function playText(texto) {
 
     speechSynthesis.speak(utterance);
 }
+
 */
