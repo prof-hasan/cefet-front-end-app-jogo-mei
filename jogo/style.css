@@ -1,0 +1,380 @@
+:root {
+    font-size: 16px;
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    min-height: 100dvh;
+    margin: 0;
+    user-select: none;
+    font-family: Google Sans Flex;
+    position: relative;
+    perspective: 1000px;
+    color: #f0e5c2;
+}
+
+#container {
+    height: 100dvh;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 0.4fr 4fr 0.3fr;
+    /*Acho que deixar o primeiro do rows em auto não seja a melhor das opções, acaba que o tamanho da barra lateral fica 
+    mudando ao longo do jogo, aí fica meio paia*/
+    grid-template-areas: 
+        "nav header"
+        "nav main"
+        "footer footer"
+}
+
+header {
+    grid-area: header;
+    background-color: #687351;
+}
+
+#outros-players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1 1 auto;
+}
+
+#outros-players div {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 280px;
+}
+
+.player-portrait {
+    border-radius: 10px;
+    object-fit: cover;
+    width: 6em;
+    height: 6em;
+    scale: 100%;
+    margin: 0 5px;
+    border: 2px solid #391e0a;
+}
+
+nav {
+    grid-area: nav;
+    background-color: #687351;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+nav h1 {
+    text-align: center;
+    font-size: 2.2em;
+    padding: 0;
+}
+
+.atributo-label {
+    text-align: center;
+    font-size: 1.5em;
+    position: relative;
+    display: inline;
+}
+
+.atributo-saldo {
+    position: absolute;
+    right: -1.5em;
+}
+
+.carta-img {
+    display: block;
+    margin: 1em auto;
+    width: 16.5em;
+    height: 16.5em;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #391e0a;
+}
+
+.barra-atributo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0.5em;
+    padding: 3px;
+    background-color: #414141;
+    border-radius: 30px;
+    height: 3em;
+    border: 2px solid #391e0a;
+}
+
+.atributo-status {
+    height: 1.9em;
+    width: 1.9em;
+    border-radius: 50%;
+    user-select: none;
+    background-size: contain;
+}
+
+.player-atributo {
+    text-align: center;
+}
+
+#botao-passa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    display: block;
+    border-radius: 50%;
+    height: 4em;
+    width: 4em;
+    position: fixed;
+    right: 1em;
+    bottom: 2em;
+    color: #687351;
+    background-color: #f1e6c3;
+}
+
+#troca-atributos {
+    margin: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    gap: 1em;
+    justify-content: space-between;
+}
+
+#descarta-atributos {
+    display: block;
+    height: 50px;
+    margin: 1em;
+}
+
+#descarta-atributos div {
+    background-color: #414141;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(32, 32, 32);
+}
+
+.troca-status {
+    display: inline;
+    width: 20%;
+    height: 100%;
+    border: 1px solid #391e0a;
+}
+
+#troca-vida {
+    background-color: #E33232;
+}
+
+#troca-agua {
+    background-color: #2258A3;
+}
+
+#troca-defesa {
+    background-color: #8C8C8C;
+}
+
+#troca-dinheiro {
+    background-color: #E8C93C;
+}
+
+main {
+    grid-area: main;
+    background-color: purple;
+}
+
+footer {
+    grid-area: footer;
+    background-color: yellow;
+}
+
+input[type="checkbox"]{
+    width: 50px;
+    height: 25px;
+    appearance: none;
+    background-color: #dae2da;
+    border-radius: 50px;
+    box-shadow: inset 0px 0px 16px 1px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    
+}
+
+input:checked[type="checkbox"] {
+    background-color: #3decb1;
+    transition: 0.4s;
+}
+
+input[type="checkbox"]:before{
+    content: '';
+    width: 25px;
+    height: 25px;
+    background-color: #EDF3F1;
+    border-radius: 50px;
+    position: absolute;
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.4);
+    transform: scale(0.8);
+    transition: .4s;
+    left: 0;
+    top: 0;
+}
+
+input:checked[type="checkbox"]::before{
+    transition: .4s;
+    position: absolute;
+    left: 25px;
+    top: 0;
+}
+
+footer{
+    display: flex;
+    position: relative;
+}
+
+#modo-daltonismo{
+    display: flex;
+
+    align-items: center;
+    position: absolute;
+    right: 1vw;
+    top: 10%;
+    width: auto;
+    white-space: nowrap;
+}
+
+.cartaevt-container {
+    position: fixed;
+    top: 200%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 38.4em;
+    height: 51.7em;
+    transform-style: preserve-3d;
+    transition: all 0.8s ease-in-out;
+}
+
+.cartasorte-container {
+    position: fixed;
+    top: 200%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 44%;
+    height: 80%;
+    transform-style: preserve-3d;
+    transition: all 0.8s ease-in-out;
+}
+
+.aviso {
+    position: absolute;
+    top: 92%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: rgb(41, 41, 41, 0.7);
+}
+
+.carta-frente {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.carta-tras {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+}
+
+.caixa-pergunta {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 70%;
+    background-color: #f1e6c3;
+    border-radius: 20px;
+    border: 2px solid #391e0a;
+    display: none;
+}
+
+.caixa-pergunta h1 {
+    text-align: center;
+    font-size: 4.5em;
+    height: 15%;
+    color: #687351;
+}
+
+.caixa-pergunta div {
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.caixa-pergunta p {
+    text-align: center;
+    width: 50%;
+    background-color: #687351;
+    font-size: 2em;
+    padding: 0.5em;
+    border-radius: 20px;
+    border: 1px solid #391e0a;
+}
+
+@media (max-width: 1450px) {
+    body {
+        min-height: 100dvh;
+    }
+
+    #container {
+        min-height: 100dvh;
+    }
+}
+
+@media (max-width: 550px) {
+    #container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 0.4fr 2fr 0.3fr;
+        grid-template-areas: 
+            "nav"
+            "header"
+            "main"
+            "footer";
+    }
+
+    /*aq, as bolinhas vao pro main ou p esse quadradao cinsa? (nao tenho a ultima letra do alfabeto)*/
+    /*-> As bolinhas ficam na nav, na main vai ter a parte do mapa*/
+
+    #botao-passa {
+        font-size: 1em;
+        right: 1em;
+        bottom: 1em;
+    }
+
+    .atributo-label {
+        font-size: 1em;
+    }
+
+    #outros-players div {
+        font-size: 0.9em;
+    }
+
+    footer p {
+        font-size: 0.9em;
+    }
+
+    /*esse botao nao deixa caber tudo bonitinho no footer*/
+
+}
