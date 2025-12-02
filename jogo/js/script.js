@@ -154,7 +154,43 @@ let cartasSorte = [
                 atualizaHTMLJogador(jogadores[i]);
         }
     },
-    
+    {
+        id: 2,
+        evento: function() {
+            perguntaSorte("atributo");
+        },
+        efeito: function() {
+            let tipoAtributo = strAtUpper(respostaAtributo);
+
+            let vezAEsquerda = vez - 1;
+            vezAEsquerda = vezAEsquerda < 0 ? vezAEsquerda + 5 : vezAEsquerda;
+
+            jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
+            jogadores[vezAEsquerda].saldo[`s${tipoAtributo}`] -= 1;
+
+            for (let i = 0; i < jogadores.length; i++)
+                atualizaHTMLJogador(jogadores[i]);
+        }
+    },
+    {
+        id: 3,
+        evento: function() {
+            perguntaSorte("atributo");
+        },
+        efeito: function() {
+            let tipoAtributo = strAtUpper(respostaAtributo);
+            let jogMenor = checaMaiorMenor("menor");
+
+            let vezAEsquerda = vez - 1;
+            vezAEsquerda = vezAEsquerda < 0 ? vezAEsquerda + 5 : vezAEsquerda;
+
+            jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
+            jogadores[vezAEsquerda].saldo[`s${tipoAtributo}`] -= 1;
+
+            for (let i = 0; i < jogadores.length; i++)
+                atualizaHTMLJogador(jogadores[i]);
+        }
+    },
 ];
 
 let vez = 0;
@@ -168,6 +204,25 @@ function strAtUpper(str) {
     let restoStr = str.slice(1);
 
     return c + restoStr
+}
+
+function checaMenMaiAtributo(tipo, tipoAt) {
+    if (tipo == "menor") {
+        let menor = jogadores[0];
+        for (let i = 1; i < jogadores.length; i++) {
+            if (jogadores[i].saldo[`s${tipoAt}`] < menor.saldo[`s${tipoAt}`])
+                menor = jogadores[i];
+        }
+        return menor;
+    }
+    else if (tipo == "maior") {
+        let maior = jogadores[0];
+        for (let i = 1; i < jogadores.length; i++) {
+            if (jogadores[i].saldo[`s${tipoAt}`] > maior.saldo[`s${tipoAt}`])
+                maior = jogadores[i];
+        }
+        return maior;
+    }
 }
 
 function checaMaiorMenor(tipo) {
