@@ -784,7 +784,12 @@ for (let i = 0; i < atNode.length; i++) {
 // 3- voltar com a voz da hatsune miku, mas sem atraso
 // 4- sei nao 
 
+// AUDIO DE VOZ NORMAL!!!!!
+
+let currentAudio = null;
+
 function playText(texto) {
+
     fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
         method: "POST",
         headers: {
@@ -797,8 +802,17 @@ function playText(texto) {
     })
     .then(respostaB => respostaB.blob())
     .then(resposta => {
+
         const audioUrl = URL.createObjectURL(resposta);
+
+        if (currentAudio) {
+            currentAudio.pause();
+        }
+
         const audio = new Audio(audioUrl);
+
+        currentAudio = audio;
+
         audio.play();
     })
     .catch(error => {
@@ -806,3 +820,19 @@ function playText(texto) {
         return Promise.resolve(); 
     });
 }
+
+
+//AUDIO DA HATSUNE MIKU!!!!!
+/*
+function playText(texto) {
+    let utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = 'pt-BR';
+    
+    let voices = speechSynthesis.getVoices();
+    let ptBrVoice = voices.find(voice => voice.lang === 'pt-BR');
+    utterance.voice = ptBrVoice;
+
+
+    speechSynthesis.speak(utterance);
+}
+*/
