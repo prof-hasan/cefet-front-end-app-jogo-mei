@@ -973,44 +973,77 @@ for (let i = 0; i < atNode.length; i++) {
 
 // AUDIO DE VOZ NORMAL!!!!!
 
-let currentAudio = null;
+// const cacheDeAudio = {};
+// let currentAudio = null;
 
-function playText(texto) {
+// async function hashString(texto) {
+//     const encoder = new TextEncoder();
+//     const data = encoder.encode(texto);
 
-    fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
-        },
-        body: JSON.stringify({
-            text: texto
-        })
-    })
-    .then(respostaB => respostaB.blob())
-    .then(resposta => {
+//     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+//     const hashArray = Array.from(new Uint8Array(hashBuffer));
+//     const hashHex = hashArray
+//         .map(b => b.toString(16).padStart(2, "0"))
+//         .join("");
 
-        const audioUrl = URL.createObjectURL(resposta);
+//     return hashHex;
+// }
 
-        if (currentAudio) {
-            currentAudio.pause();
-        }
+// function playAudio(audioURL) {
+//     if (currentAudio) {
+//         currentAudio.pause();
+//     }
 
-        const audio = new Audio(audioUrl);
+//     const audio = new Audio(audioURL);
+//     currentAudio = audio;
 
-        currentAudio = audio;
+//     audio.play();
+// }
 
-        audio.play();
-    })
-    .catch(error => {
-        console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
-        return Promise.resolve(); 
-    });
-}
+// async function playText(texto) {
+
+//     let hashTexto = await hashString(texto);
+//     if (cacheDeAudio[hashTexto]) {
+//         const audioURL = cacheDeAudio[hashTexto];
+//         return playAudio(audioURL);
+//     } 
+
+//     fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
+//         },
+//         body: JSON.stringify({
+//             text: texto
+//         })
+//     })
+//     .then(respostaB => respostaB.blob())
+//     .then(resposta => {
+
+//         const audioUrl = URL.createObjectURL(resposta);
+//         cacheDeAudio[hashTexto] = audioURL;
+//         playAudio(audioURL);
+
+//         if (currentAudio) {
+//             currentAudio.pause();
+//         }
+
+//         const audio = new Audio(audioUrl);
+
+//         currentAudio = audio;
+
+//         audio.play();
+//     })
+//     .catch(error => {
+//         console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
+//         return Promise.resolve(); 
+//     });
+// }
 
 
 //AUDIO DA HATSUNE MIKU!!!!!
-/*
+
 function playText(texto) {
     let utterance = new SpeechSynthesisUtterance(texto);
     utterance.lang = 'pt-BR';
@@ -1019,8 +1052,5 @@ function playText(texto) {
     let ptBrVoice = voices.find(voice => voice.lang === 'pt-BR');
     utterance.voice = ptBrVoice;
 
-
     speechSynthesis.speak(utterance);
 }
-
-*/
