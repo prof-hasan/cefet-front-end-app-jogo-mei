@@ -619,6 +619,7 @@ function ativaCarta(carta, tipo) {
         cartaTras.src = `imgs/cartasEvts/${carta.nome}.png`;
         cartaTras.style.borderRadius = "20px";
         cartaFrente.style.borderRadius = "20px";
+        playText(carta.descricao);
     }
     else {
         cartaTras.src = `imgs/cartasSA/SorteouAzar-${carta.id}.png`;
@@ -713,6 +714,8 @@ ativaCarta(cartaEvtAtual, 1);
 let turnosAjuste = -10;
 
 function passaVez() {
+    playText("Passada a vez.");
+
     if (!cartaDisplay) {
         turnosAjuste++;
 
@@ -779,6 +782,8 @@ function geraAt(e) {
         bodyEl.style.userSelect = "none";
         elDragging = true;
         let atualEl = e.currentTarget;
+
+        playText('segurando');
 
         let novaImg = document.createElement("img");
         novaImg.classList.add("atributo-status", "mov-img");
@@ -879,6 +884,8 @@ function paraAt() {
     let img = document.querySelector(".mov-img");
     let tipoImgAtual = img.dataset.tipo;
 
+    playText('parou');
+
     if (Number(tipoImgAtual) == barraEmHover) {
         if(tipoImgAtual == 0 && jogadores[vez].vida < 10) {
             jogadores[vez].vida++;
@@ -971,79 +978,98 @@ for (let i = 0; i < atNode.length; i++) {
 // 3- voltar com a voz da hatsune miku, mas sem atraso
 // 4- sei nao 
 
+// favor nao apagar meus negocio do playText() </33
+
 // AUDIO DE VOZ NORMAL!!!!!
 
-// const cacheDeAudio = {};
-// let currentAudio = null;
+const cacheDeAudio = {};
+let currentAudio = null;
+let usuarioInteragiu = false;
 
-// async function hashString(texto) {
-//     const encoder = new TextEncoder();
-//     const data = encoder.encode(texto);
+document.addEventListener('click', () => {
+   usuarioInteragiu = true;
+},
+{ 
+   once: true 
+})
 
-//     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-//     const hashArray = Array.from(new Uint8Array(hashBuffer));
-//     const hashHex = hashArray
-//         .map(b => b.toString(16).padStart(2, "0"))
-//         .join("");
+document.addEventListener('keydown', () => {
+    usuarioInteragiu = true;
+}, 
+{ 
+   once: true 
+})
 
-//     return hashHex;
-// }
+async function hashString(texto) {
+    const encoder = new TextEncoder(); 
+    const data = encoder.encode(texto); // pega os bytes do que vai ser falado
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);  // codifica os dados 
+    const hashArray = Array.from(new Uint8Array(hashBuffer));  // pega esses dados, transforma numa string e poe em hexadecimal
+    const hashHex = hashArray
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
 
-// function playAudio(audioURL) {
-//     if (currentAudio) {
-//         currentAudio.pause();
-//     }
+    return hashHex;
+}
 
-//     const audio = new Audio(audioURL);
-//     currentAudio = audio;
+function playAudio(audioURL) {
+    if (currentAudio) {
+        currentAudio.pause();   // se ja tem um tocando, ele para
+    }
 
-//     audio.play();
-// }
+    if (!usuarioInteragiu) {
+       return;   // caso o usuário ainda nao clicou no jogo, o áudio nao toca por uma proteção do navegador
+    }
 
-// async function playText(texto) {
+    currentAudio = new Audio(audioURL);
+    currentAudio.play();
+}
 
-//     let hashTexto = await hashString(texto);
-//     if (cacheDeAudio[hashTexto]) {
-//         const audioURL = cacheDeAudio[hashTexto];
-//         return playAudio(audioURL);
-//     } 
+async function playText(texto) {
 
-//     fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
-//         },
-//         body: JSON.stringify({
-//             text: texto
-//         })
-//     })
-//     .then(respostaB => respostaB.blob())
-//     .then(resposta => {
+    const hashTexto = await hashString(texto);
 
-//         const audioUrl = URL.createObjectURL(resposta);
-//         cacheDeAudio[hashTexto] = audioURL;
-//         playAudio(audioURL);
+    if (cacheDeAudio[hashTexto]) {
+        const audioURL = cacheDeAudio[hashTexto];
+        return playAudio(audioURL);
+    } 
 
-//         if (currentAudio) {
-//             currentAudio.pause();
-//         }
+    const resposta = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+        method: "POST",  // envia os dados pro elevenlabs transformar em audio
+        headers: {
+             "Content-Type": "application/json",  // significa q eu to enviando dados json
+             "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
+        },
+        body: JSON.stringify({
+            text: texto
+        })
+   })
 
-//         const audio = new Audio(audioUrl);
+    .then(respostaB => respostaB.blob())  // audio convertido em blob: binary large object - pega o audio e 'empacota'
 
-//         currentAudio = audio;
+    .then(resposta => {
 
-//         audio.play();
-//     })
-//     .catch(error => {
-//         console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
-//         return Promise.resolve(); 
-//     });
-// }
+        const audioUrl = URL.createObjectURL(resposta);  // transforma o audio em uma URL pra q nao precise salvar o arquivo
+        cacheDeAudio[hashTexto] = audioUrl;
+        playAudio(audioUrl);
+
+        const audio = new Audio(audioUrl);
+
+        currentAudio = audio;
+
+        audio.play();
+    })
+
+    .catch(error => {
+        console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
+            return Promise.resolve(); 
+    });
+
+}
 
 
 //AUDIO DA HATSUNE MIKU!!!!!
-
+/*
 function playText(texto) {
     let utterance = new SpeechSynthesisUtterance(texto);
     utterance.lang = 'pt-BR';
@@ -1054,3 +1080,4 @@ function playText(texto) {
 
     speechSynthesis.speak(utterance);
 }
+*/
