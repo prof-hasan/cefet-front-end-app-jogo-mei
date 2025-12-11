@@ -8,195 +8,11 @@ let barraNode = document.querySelectorAll(".barra-atributo");
 
 let nJogadores = 5;
 
-
-//Banco de personagens do jogo
-let personagens = [
-    {
-        nome: "Dandara",
-        vida: 6,
-        agua: 4,
-        defesa: 2,
-        dinheiro: 4,
-        local: "Periferia",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Gabriel",
-        vida: 4,
-        agua: 8,
-        defesa: 9,
-        dinheiro: 7,
-        local: "AreaPriv",
-        idade: "",
-        condicao: "Asma"
-    },
-    {
-        nome: "Luanda",
-        vida: 8,
-        agua: 4,
-        defesa: 3,
-        dinheiro: 2,
-        local: "Quilombo",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Kaike",
-        vida: 9,
-        agua: 6,
-        defesa: 5,
-        dinheiro: 2,
-        local: "Aldeia",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Maria",
-        vida: 7,
-        agua: 2,
-        defesa: 3,
-        dinheiro: 2,
-        local: "Periferia",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Adriana",
-        vida: 5,
-        agua: 4,
-        defesa: 4,
-        dinheiro: 4,
-        local: "",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Tereza",
-        vida: 7,
-        agua: 7,
-        defesa: 5,
-        dinheiro: 3,
-        local: "",
-        idade: "",
-        condicao: ""
-    },
-    {
-        nome: "Roberto",
-        vida: 2,
-        agua: 10,
-        defesa: 8,
-        dinheiro: 10,
-        local: "",
-        idade: "Avançada",
-        condicao: ""
-    },
-    {
-        nome: "Hasan",
-        vida: 10,
-        agua: 10,
-        defesa: 10,
-        dinheiro: 10,
-        local: "",
-        idade: "",
-        condicao: ""
-    },
-];
-
-//Banco de cartas de evento (1 por turno, no começo)
-let cartasEvt = [
-    {
-        nome: "calorE",
-        id: 0,
-        descricao: "Uma onda de calor atinge o território. O acesso desigual à água e à infraestrutura agrava os efeitos do clima."
-    },
-    {
-        nome: "poluicaoDA",
-        id: 1,
-        descricao: "A poluição do ar, causada por atividades industriais, agrava condições dos moradores em regiões densamente povoadas."
-    },
-    {
-        nome: "queimadaEAN",
-        id: 2,
-        descricao: "Um incêndio florestal descontrolado impacta a qualidade do ar e da água."
-    },
-    {
-        nome: "surtoDH",
-        id: 3,
-        descricao: "A contaminação das águas provoca um surto de doenças."
-    },
-    {
-        nome: "tempestadeCA",
-        id: 4,
-        descricao: "Chuvas intensas provocam alagamentos e deslizamentos. Áreas com pouca infraestrutura sofrem mais."
-    }
-];
-
-//Banco de cartas de sorte ou azar
-let cartasSorte = [
-    {
-        id: 1,
-        evento: function() {
-            perguntaSorte("atributo");
-        },
-        efeito: function() {
-            let jogMaior = checaMaiorMenor("maior");
-            let jogMenor = checaMaiorMenor("menor");
-
-            let tipoAtributo = strAtUpper(respostaAtributo);
-
-            console.log(jogMaior, jogMenor, tipoAtributo);
-
-            jogMaior.saldo[`s${tipoAtributo}`] -= 2;
-            jogMenor.saldo[`s${tipoAtributo}`] += 2;
-
-            for (let i = 0; i < jogadores.length; i++)
-                atualizaHTMLJogador(jogadores[i]);
-        }
-    },
-    {
-        id: 2,
-        evento: function() {
-            perguntaSorte("atributo");
-        },
-        efeito: function() {
-            let tipoAtributo = strAtUpper(respostaAtributo);
-
-            let vezAEsquerda = vez - 1;
-            vezAEsquerda = vezAEsquerda < 0 ? vezAEsquerda + 5 : vezAEsquerda;
-
-            jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
-            jogadores[vezAEsquerda].saldo[`s${tipoAtributo}`] -= 1;
-
-            for (let i = 0; i < jogadores.length; i++)
-                atualizaHTMLJogador(jogadores[i]);
-        }
-    },
-    {
-        id: 3,
-        evento: function() {
-            perguntaSorte("atributo");
-        },
-        efeito: function() {
-            let tipoAtributo = strAtUpper(respostaAtributo);
-            let jogMenor = checaMaiorMenor("menor");
-
-            let vezAEsquerda = vez - 1;
-            vezAEsquerda = vezAEsquerda < 0 ? vezAEsquerda + 5 : vezAEsquerda;
-
-            jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
-            jogadores[vezAEsquerda].saldo[`s${tipoAtributo}`] -= 1;
-
-            for (let i = 0; i < jogadores.length; i++)
-                atualizaHTMLJogador(jogadores[i]);
-        }
-    },
-];
-
 let vez = 0;
 let turno = 0;
 
 let jogadores = [];
+let vetorAtributos = ["Saúde", "Disp. hídrica", "Segurança", "Disp. monetária", "Total"];
 
 function strAtUpper(str) {
     let c = str[0].toUpperCase();
@@ -210,15 +26,17 @@ function checaMenMaiAtributo(tipo, tipoAt) {
     if (tipo == "menor") {
         let menor = jogadores[0];
         for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i].saldo[`s${tipoAt}`] < menor.saldo[`s${tipoAt}`])
+            if (jogadores[i][`${tipoAt}`] < menor[`${tipoAt}`])
                 menor = jogadores[i];
         }
+
+        console.log(menor);
         return menor;
     }
     else if (tipo == "maior") {
         let maior = jogadores[0];
         for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i].saldo[`s${tipoAt}`] > maior.saldo[`s${tipoAt}`])
+            if (jogadores[i][`${tipoAt}`] > maior[`${tipoAt}`])
                 maior = jogadores[i];
         }
         return maior;
@@ -429,6 +247,7 @@ function atualizaHTMLJogador(jogador) {
             else
                 saldoText.style.color = "red";
 
+
             labelAtNode[i].appendChild(saldoText);
         };
 
@@ -511,7 +330,7 @@ function efeitoCartaEvt(carta, jogador) {
 
 let respostaPlayer, respostaAtributo;
 
-function perguntaSorte(tipo) {
+function perguntaSorte(tipo, vJog) {
     let caixaPerguntaEl = document.createElement("div");
     caixaPerguntaEl.classList.add("caixa-pergunta");
     bodyEl.appendChild(caixaPerguntaEl);
@@ -523,17 +342,22 @@ function perguntaSorte(tipo) {
     let containerOptionsEl = document.createElement("div");
     caixaPerguntaEl.appendChild(containerOptionsEl);
 
-    if (tipo == "player") {
+    if (tipo == "player" || tipo == "troca") {
         let nPlayerOpcao;
         caixaTituloEl.innerHTML += "jogador";
-        for (let i = 0; i < nJogadores - 1; i++) {
+        console.log("length -> ", vJog.length);
+        for (let i = 0; i < vJog.length; i++) {
             let opcaoEl = document.createElement("p");
 
             nPlayerOpcao = (vez + 1) + i;
+            console.log("Condicao true -> ", nPlayerOpcao >= vJog.length);
 
-            nPlayerOpcao >= 5 ? nPlayerOpcao - 5 : nPlayerOpcao;
+            while (nPlayerOpcao >= vJog.length)
+                nPlayerOpcao = (nPlayerOpcao >= vJog.length ? (nPlayerOpcao - vJog.length) : (nPlayerOpcao));
 
-            opcaoEl.innerHTML = jogadores[nPlayerOpcao].nome;
+            console.log("opcao ->", nPlayerOpcao);
+
+            opcaoEl.innerHTML = vJog[nPlayerOpcao].nome;
             containerOptionsEl.appendChild(opcaoEl);
         }
 
@@ -541,8 +365,6 @@ function perguntaSorte(tipo) {
     }
     else if (tipo == "atributo") {
         caixaTituloEl.innerHTML += "atributo";
-
-        let vetorAtributos = ["Saúde", "Disp. hídrica", "Segurança", "Disp. monetária"];
 
         for (let i = 0; i < 4; i++) {
             let opcaoEl = document.createElement("p");
@@ -558,18 +380,30 @@ function perguntaSorte(tipo) {
     $(".caixa-pergunta").fadeToggle();
 }
 
-function respondePergunta(e, tipo, caixaEl) {
+function respondePergunta(e, tipo, caixaEl, vJog) {
     let resposta = null;
     let opcaoEscolhida = e.currentTarget;
+
+    $(".caixa-pergunta p").off("click");
 
     if (tipo == "player") {
         resposta = opcaoEscolhida.innerHTML;
         respostaPlayer = checaJogadores(resposta);
         setTimeout(() => {
             bodyEl.removeChild(caixaEl);
-            perguntaSorte("atributo");
+            perguntaSorte("atributo", vJog);
         }, 500);
+    }
+    else if (tipo == "troca") {
+        resposta = opcaoEscolhida.innerHTML;
+        respostaPlayer = checaJogadores(resposta);
 
+        console.log("resp ->", respostaPlayer);
+        cartaSorteAtual.efeito();
+
+        setTimeout(() => {
+            bodyEl.removeChild(caixaEl);
+        }, 500);
     }
     else if (tipo == "atributo") {
         let resposta = opcaoEscolhida.dataset.tipoAt;
@@ -577,6 +411,8 @@ function respondePergunta(e, tipo, caixaEl) {
 
         console.log(respostaPlayer, respostaAtributo);
         cartaSorteAtual.efeito();
+
+        console.log(caixaEl);
 
         setTimeout(() => {
             bodyEl.removeChild(caixaEl);
@@ -714,9 +550,8 @@ ativaCarta(cartaEvtAtual, 1);
 let turnosAjuste = -10;
 
 function passaVez() {
-    playText("Passada a vez.");
-
     if (!cartaDisplay) {
+        playText("Passada a vez.");
         turnosAjuste++;
 
         vez++;
@@ -740,6 +575,7 @@ function passaVez() {
             ativaCarta(cartaSorteAtual, 0);
         }
         
+        console.log(jogadores);
 
         for (let i = 0; i < 5; i++) {
             jogadores[i].num--;
@@ -966,6 +802,122 @@ for (let i = 0; i < atNode.length; i++) {
     atNode[i].addEventListener("mousedown", geraAt);
     atNode[i].style.cursor = "grab";
 }
+
+// Infos dos personagens, hover nas imagens
+
+let portraitNode = document.querySelectorAll(".info");
+
+let tipoVerificacao = "";
+
+function mostraInfosPersonagem(e) {
+    tipoVerificacao = "entrada";
+    let imgEl = e.currentTarget;
+    let jogadorNum = Number(imgEl.dataset.num) + 1;
+
+    console.log("number -> ", jogadorNum);
+
+    let jogadorAtual = null;
+
+    for (let i = 0; i < jogadores.length; i++) {
+        if (jogadorNum == jogadores[i].num)
+            jogadorAtual = jogadores[i];
+    }
+
+    console.log("pers -> ", jogadorAtual);
+
+    let caixaInfoEl = document.createElement("div");
+    caixaInfoEl.classList.add("caixa-info");
+
+    let nomeEl = document.createElement("h1");
+    nomeEl.innerHTML = jogadorAtual.nome;
+    caixaInfoEl.appendChild(nomeEl);
+
+    let descricaoEl = document.createElement("p");
+    descricaoEl.innerHTML = jogadorAtual.personagem.descricao;
+    caixaInfoEl.appendChild(descricaoEl);
+
+    caixaInfoEl.appendChild(document.createElement("br"));
+
+    let listaAtEl = document.createElement("ul");
+    caixaInfoEl.appendChild(listaAtEl);
+
+    for (let i = 0; i < 5; i++) {
+        let liEl = document.createElement("li");
+        
+        if (i < 4) {
+            liEl.innerHTML = `${vetorAtributos[i]}: ${jogadorAtual[checaAtributo(i)]}`;
+        }
+        else {
+            liEl.innerHTML = `${vetorAtributos[i]}: ${jogadorAtual.total()}`;
+        }
+
+        listaAtEl.appendChild(liEl);
+    }
+
+    bodyEl.appendChild(caixaInfoEl);
+    bodyEl.style.overflowX = "hidden";
+
+    xInicial = e.clientX - 15;
+    yInicial = e.clientY - 15;
+
+    caixaInfoEl.style.position = "fixed";
+    caixaInfoEl.draggable = false;
+    caixaInfoEl.style.left = xInicial + 'px';
+    caixaInfoEl.style.top = yInicial + 'px';
+    caixaInfoEl.style.pointerEvents = "none";
+
+    document.addEventListener("mousemove", moveInfo);
+    imgEl.addEventListener("mouseout", paraInfo);
+}
+
+for (let i = 0; i < portraitNode.length; i++) {
+    portraitNode[i].addEventListener("mouseover", mostraInfosPersonagem);
+}
+
+function moveInfo(e) {
+    let caixaInfoEl = document.querySelector(".caixa-info");
+
+    if (!caixaInfoEl) {
+        document.removeEventListener("mousemove", moveInfo);
+        return; 
+    }
+
+    if (verificaUltr(caixaInfoEl, tipoVerificacao)) {
+        tipoVerificacao = "hover";
+        xInicial = e.clientX - 300;
+    }
+    else {
+        xInicial = e.clientX - 15;
+    }
+
+    yInicial = e.clientY - 15;
+
+    caixaInfoEl.style.left = xInicial + 'px';
+    caixaInfoEl.style.top = yInicial + 'px';
+}
+
+function verificaUltr(element, tipo) {
+    let posEl = element.getBoundingClientRect();
+
+    console.log(posEl.right, " - ", window.innerWidth)
+
+    if (tipo == "entrada") {
+        return posEl.right > window.innerWidth;
+    }
+
+    else if (tipo == "hover")
+        return posEl.right + window.innerWidth / 4 > window.innerWidth;
+}
+
+function paraInfo() {
+    let caixaInfoEl = document.querySelector(".caixa-info");
+
+    bodyEl.removeChild(caixaInfoEl);
+
+    document.removeEventListener("mousemove", moveInfo);
+    bodyEl.style.overflowX = "auto";
+}
+
 
 /*--- voz ---*/
 

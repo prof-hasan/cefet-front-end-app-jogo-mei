@@ -186,12 +186,15 @@ nav h1 {
 
 main {
     grid-area: main;
-    background-color: purple;
+    background-image: url(imgs/mapaJogo.jpg);
+    background-position: center;
+
 }
 
 footer {
     grid-area: footer;
-    background-color: yellow;
+    background-color: #4c543b;
+    border-top: 1px solid #f1e6c3;
 }
 
 input[type="checkbox"]{
@@ -240,11 +243,11 @@ footer{
 
 #modo-daltonismo{
     display: flex;
-
     align-items: center;
     position: absolute;
     right: 1vw;
-    top: 10%;
+    top: 50%;
+    transform: translateY(-50%);
     width: auto;
     white-space: nowrap;
 }
@@ -331,6 +334,37 @@ footer{
     padding: 0.5em;
     border-radius: 20px;
     border: 1px solid #391e0a;
+}
+
+.caixa-info {
+    background-color: #687351;
+    border: 2px solid #391e0a;
+    border-radius: 16px;
+    width: 20rem;
+    padding: 1rem;
+}
+
+.caixa-info h1 {
+    text-align: center;
+}
+
+.caixa-info p {
+    text-align: justify;
+    font-size: 1.1rem;
+}
+
+.caixa-info ul {
+    list-style-type: none;
+}
+
+.caixa-info li {
+    font-size: 1.3rem;
+    margin-top: 0.3rem;
+    text-align: justify;
+}
+
+.caixa-info strong {
+    color: rgb(225, 113, 113);
 }
 
 @media (max-width: 1450px) {
