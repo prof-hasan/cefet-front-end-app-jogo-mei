@@ -918,6 +918,40 @@ function paraInfo() {
     bodyEl.style.overflowX = "auto";
 }
 
+//Easter egg Hasan
+
+cheet('h a s a n', () => {
+    let personagemHasan = personagens[personagens.length - 1];
+
+    let jogador = {
+        personagem: personagemHasan,
+
+        num: vez + 1,
+        nome: personagemHasan.nome,
+        vida: personagemHasan.vida,
+        agua: personagemHasan.agua,
+        defesa: personagemHasan.defesa,
+        dinheiro: personagemHasan.dinheiro,
+        local: personagemHasan.local,
+        saldo: {sVida: 0, sAgua: 0, sDefesa: 0, sDinheiro: 0},
+        total: function() {
+            return this.vida + this.agua + this.defesa + this.dinheiro;
+        }
+    }
+
+    jogadores[vez] = jogador;
+
+    for (let i = 0; i < jogadores.length; i++) {
+        atualizaHTMLJogador(jogadores[i]);
+    }
+
+    atNode = document.querySelectorAll(".fixo");
+
+    for (let i = 0; i < atNode.length; i++) {
+            atNode[i].addEventListener("mousedown", geraAt);
+            atNode[i].style.cursor = "grab";
+    }
+})
 
 /*--- voz ---*/
 

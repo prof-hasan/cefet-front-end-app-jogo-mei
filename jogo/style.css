@@ -188,7 +188,7 @@ main {
     grid-area: main;
     background-image: url(imgs/mapaJogo.jpg);
     background-position: center;
-
+    border: 3px solid #4c543b;
 }
 
 footer {

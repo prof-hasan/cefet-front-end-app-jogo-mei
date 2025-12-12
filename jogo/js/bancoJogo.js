@@ -95,7 +95,8 @@ let personagens = [
         dinheiro: 10,
         local: "",
         idade: "",
-        condicao: ""
+        condicao: "",
+        descricao: "Melhor professor de web do <strong>mundo</strong>."
     },
 ];
 
@@ -131,6 +132,7 @@ let cartasEvt = [
 //Banco de cartas de sorte ou azar
 let vJogPergunta = [];
 let cartasSorte = [
+    /*
     {
         id: 1,
         evento: function() {
@@ -195,13 +197,9 @@ let cartasSorte = [
             let jogM12 = [];
 
             for (let i = 0; i < vJogPergunta.length; i++) {
-                console.log(vJogPergunta[i].nome , " -> ", vJogPergunta[i].total());
-
                 if (vJogPergunta[i].total() > 12 && vJogPergunta[i] != jogadores[vez])
                     jogM12.push(jogadores[i]);
             }
-
-            console.log("jogM12 -> ", jogM12);
 
             if (jogM12 != null)
                 perguntaSorte("player", jogM12);
@@ -236,5 +234,58 @@ let cartasSorte = [
                 atualizaHTMLJogador(jogadores[i]);
         }
     },
-    
+    {
+        id: 8,
+        evento: function() {
+            cartaSorteAtual.efeito();
+        },
+        efeito: function() {
+            let tipoAtributo = "Dinheiro";
+
+            console.log("banco -> ", jogadores[vez].personagem.dinheiro);
+
+            if (jogadores[vez].dinheiro < 4)
+                jogadores[vez].saldo[`s${tipoAtributo}`] += jogadores[vez].personagem.dinheiro;
+            
+            for (let i = 0; i < jogadores.length; i++)
+                atualizaHTMLJogador(jogadores[i]);
+
+            atNode = document.querySelectorAll(".fixo");
+
+            for (let i = 0; i < atNode.length; i++) {
+                atNode[i].addEventListener("mousedown", geraAt);
+                atNode[i].style.cursor = "grab";
+            }
+        }
+    }, */
+    {
+        id: 9,
+        evento: function() {
+            vJogPergunta = jogadores;
+
+            let jogM8seg = [];
+
+            for (let i = 0; i < vJogPergunta.length; i++) {
+                if (vJogPergunta[i].defesa > 8 && vJogPergunta[i] != jogadores[vez])
+                    jogM8seg.push(jogadores[i]);
+            }
+
+            console.log(jogM8seg);
+
+            if (jogM8seg != [])
+                perguntaSorte("troca", jogM8seg);
+            else
+                console.log("NAO ROLOU");
+        },
+        efeito: function() {
+            let tipoAtributo = "Defesa";
+
+
+            jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
+            respostaPlayer.saldo[`s${tipoAtributo}`] -= 1;
+            
+            for (let i = 0; i < jogadores.length; i++)
+                atualizaHTMLJogador(jogadores[i]);
+        }
+    },
 ];
