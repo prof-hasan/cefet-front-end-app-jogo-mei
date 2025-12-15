@@ -22,41 +22,41 @@ function strAtUpper(str) {
     return c + restoStr
 }
 
-function checaMenMaiAtributo(tipo, tipoAt) {
+function checaMenMaiAtributo(tipo, tipoAt, vJogadores) {
     if (tipo == "menor") {
-        let menor = jogadores[0];
-        for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i][`${tipoAt}`] < menor[`${tipoAt}`])
-                menor = jogadores[i];
+        let menor = vJogadores[0];
+        for (let i = 1; i < vJogadores.length; i++) {
+            if (vJogadores[i][`${tipoAt}`] < menor[`${tipoAt}`])
+                menor = vJogadores[i];
         }
 
         console.log(menor);
         return menor;
     }
     else if (tipo == "maior") {
-        let maior = jogadores[0];
-        for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i][`${tipoAt}`] > maior[`${tipoAt}`])
-                maior = jogadores[i];
+        let maior = vJogadores[0];
+        for (let i = 1; i < vJogadores.length; i++) {
+            if (vJogadores[i][`${tipoAt}`] > maior[`${tipoAt}`])
+                maior = vJogadores[i];
         }
         return maior;
     }
 }
 
-function checaMaiorMenor(tipo) {
+function checaMaiorMenor(tipo, vJogadores) {
     if (tipo == "menor") {
-        let menor = jogadores[0];
-        for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i].total() < menor.total())
-                menor = jogadores[i];
+        let menor = vJogadores[0];
+        for (let i = 1; i < vJogadores.length; i++) {
+            if (vJogadores[i].total() < menor.total())
+                menor = vJogadores[i];
         }
         return menor;
     }
     else if (tipo == "maior") {
-        let maior = jogadores[0];
-        for (let i = 1; i < jogadores.length; i++) {
-            if (jogadores[i].total() > maior.total())
-                maior = jogadores[i];
+        let maior = vJogadores[0];
+        for (let i = 1; i < vJogadores.length; i++) {
+            if (vJogadores[i].total() > maior.total())
+                maior = vJogadores[i];
         }
         return maior;
     }
@@ -208,7 +208,8 @@ function criaJogador(nJogador) {
         saldo: {sVida: 0, sAgua: 0, sDefesa: 0, sDinheiro: 0},
         total: function() {
             return this.vida + this.agua + this.defesa + this.dinheiro;
-        }
+        },
+        status: "emJogo"
     }
 
     return jogador;
@@ -265,6 +266,24 @@ function atualizaHTMLJogador(jogador) {
 
     jogadorImg.src = `imgs/personagens/${jogador.nome}.png`;
     jogadorName.innerHTML = jogador.nome;
+
+    if (!verificaStatus(jogador)) {
+        jogador.status = "fora de jogo";
+    }
+
+    if (jogador.status != "emJogo") {
+        jogadorImg.src = `imgs/personagens/foraDeJogo.png`;
+    }
+}
+
+function verificaStatus(jogador) {
+    for (let i = 0; i < 4; i++) {
+        console.log("atJog -> ", jogador[checaAtributo(i)]);
+        if (jogador[checaAtributo(i)] == 0)
+            return 0;
+    }
+    
+    return 1;
 }
 
 let cartaDisplay = 0;
@@ -349,16 +368,11 @@ function perguntaSorte(tipo, vJog) {
         for (let i = 0; i < vJog.length; i++) {
             let opcaoEl = document.createElement("p");
 
-            nPlayerOpcao = (vez + 1) + i;
-            console.log("Condicao true -> ", nPlayerOpcao >= vJog.length);
+            if (vJog[i] != jogadores[vez]) {
+                opcaoEl.innerHTML = vJog[i].nome;
+                containerOptionsEl.appendChild(opcaoEl);
+            }
 
-            while (nPlayerOpcao >= vJog.length)
-                nPlayerOpcao = (nPlayerOpcao >= vJog.length ? (nPlayerOpcao - vJog.length) : (nPlayerOpcao));
-
-            console.log("opcao ->", nPlayerOpcao);
-
-            opcaoEl.innerHTML = vJog[nPlayerOpcao].nome;
-            containerOptionsEl.appendChild(opcaoEl);
         }
 
         $(".caixa-pergunta p").click((e) => respondePergunta(e, tipo, caixaPerguntaEl));
@@ -404,6 +418,13 @@ function respondePergunta(e, tipo, caixaEl, vJog) {
         setTimeout(() => {
             bodyEl.removeChild(caixaEl);
         }, 500);
+
+        atNode = document.querySelectorAll(".fixo");
+
+        for (let i = 0; i < atNode.length; i++) {
+            atNode[i].addEventListener("mousedown", geraAt);
+            atNode[i].style.cursor = "grab";
+        }
     }
     else if (tipo == "atributo") {
         let resposta = opcaoEscolhida.dataset.tipoAt;
@@ -549,16 +570,49 @@ ativaCarta(cartaEvtAtual, 1);
 
 let turnosAjuste = -10;
 
-function passaVez() {
-    if (!cartaDisplay) {
-        playText("Passada a vez.");
-        turnosAjuste++;
+let jogadoresEmJogo = [];
+for (let i = 0; i < jogadores.length; i++) {
+    if (jogadores[i].status == "emJogo")
+        jogadoresEmJogo.push(jogadores[i]);
+}
 
+let ultimoPlayer = jogadores[jogadores.length - 1];
+
+
+function passaVez() {
+    console.log("length -> ", jogadores.length);
+
+    jogadoresEmJogo = [];
+    for (let i = 0; i < jogadores.length; i++) {
+        if (jogadores[i].status == "emJogo")
+            jogadoresEmJogo.push(jogadores[i]);
+    }
+
+    if (!cartaDisplay) {
+        console.log("passada a vez");
+        playText("Passada a vez.");
+
+        turnosAjuste++;
         vez++;
-        if (vez === 5) {
+
+        if (vez >= 5) {
             vez = 0;
-            if (turnosAjuste == 0) {
-                turnosAjuste = -10;
+
+            for (let i = 0; i < 5; i++) {
+                jogadores[i].num--;
+                if (jogadores[i].num === 0)
+                    jogadores[i].num = 5;
+            
+                atualizaHTMLJogador(jogadores[i]);
+            }
+            
+            if (!verificaStatus(jogadores[vez])) {
+                passaVez();
+                return;
+            }
+
+            if (turnosAjuste >= 0) {
+                turnosAjuste -= 10;
                 cartaEvtAtual = sorteiaCarta(cartasEvt);
 
                 console.log("carta -> ", cartaEvtAtual);
@@ -569,19 +623,44 @@ function passaVez() {
                 }
             }
         }
+        else {
+            for (let i = 0; i < 5; i++) {
+                jogadores[i].num--;
+                if (jogadores[i].num === 0)
+                    jogadores[i].num = 5;
+            
+                atualizaHTMLJogador(jogadores[i]);
+            }
+
+            if (!verificaStatus(jogadores[vez])) {
+                passaVez();
+                return;
+            }
+        }
+
+        console.log("flag -> ", jogadores);
 
         if (turnosAjuste >= -5) {
             cartaSorteAtual = sorteiaCarta(cartasSorte);
             ativaCarta(cartaSorteAtual, 0);
         }
-        
-        console.log(jogadores);
 
-        for (let i = 0; i < 5; i++) {
-            jogadores[i].num--;
-            if (jogadores[i].num === 0)
-                jogadores[i].num = 5;
+        console.log("ajuste ->", turnosAjuste);
+        console.log("vez -> ", vez);
+
         
+        let ultimoIndex = vez - 1;
+
+        if (ultimoIndex < 0)
+            ultimoIndex += jogadores.length;
+
+        verificaSaldo(jogadores[ultimoIndex]);
+
+        if (!verificaStatus(jogadores[ultimoIndex])) {
+            jogadores[i].status = "fora de jogo";
+        }
+
+        for (let i = 0; i < jogadores.length; i++) {
             atualizaHTMLJogador(jogadores[i]);
         }
 
@@ -592,8 +671,61 @@ function passaVez() {
             atNode[i].style.cursor = "grab";
         }
 
-        console.log("ajuste ->", turnosAjuste);
-        console.log("vez ->", vez);
+
+        verificaVitoria();
+    }
+}
+
+function verificaVitoria() {
+    if (jogadoresEmJogo.length == 1) {
+        bodyEl.removeChild(document.querySelector("#container"));
+        
+        let containerTelaVitoriaEl = document.createElement("div");
+        containerTelaVitoriaEl.classList.add("container-vitoria");
+        
+        let titleEl =  document.createElement("h1");
+        titleEl.innerHTML = "VITÓRIA";
+
+        let imgPlayerEl = document.createElement("img");
+        imgPlayerEl.classList.add("carta-img");
+        imgPlayerEl.src = `imgs/personagens/${jogadoresEmJogo[0].nome}.png`;
+
+        let nomeJogador = document.createElement("h2");
+        nomeJogador.innerHTML = jogadoresEmJogo[0].nome;
+
+        let botaoMenuEl = document.createElement("button");
+        botaoMenuEl.classList.add("btn");
+        botaoMenuEl.innerHTML = "Voltar ao menu";
+        
+        botaoMenuEl.addEventListener("click", () => {
+            window.location.href = "../../menu.html";
+        });
+
+        containerTelaVitoriaEl.appendChild(titleEl);
+        containerTelaVitoriaEl.appendChild(imgPlayerEl);
+        containerTelaVitoriaEl.appendChild(nomeJogador);
+        containerTelaVitoriaEl.appendChild(botaoMenuEl);
+
+        bodyEl.appendChild(containerTelaVitoriaEl);
+    }
+}
+
+function calculaUltimoPlayerVivo(jogador) {
+    let ultimoPlayerIndex = jogadoresEmJogo.indexOf(jogador) - 1;
+
+    if (ultimoPlayerIndex < 0)
+        ultimoPlayerIndex += jogadoresEmJogo.length;
+
+    return jogadoresEmJogo[ultimoPlayerIndex];
+}
+
+function verificaSaldo(jogador) {
+    for (let i = 0; i < 4; i++) {
+        let tipoAtributo = strAtUpper(checaAtributo(i));
+        if (jogador.saldo[`s${tipoAtributo}`] != 0) {
+            jogador[checaAtributo(i)] -= (Math.abs(jogador.saldo[`s${tipoAtributo}`]) + 1);
+            jogador.saldo[`s${tipoAtributo}`] = 0;
+        }
     }
 }
 
@@ -894,7 +1026,6 @@ function moveInfo(e) {
 
     caixaInfoEl.style.left = xInicial + 'px';
     caixaInfoEl.style.top = yInicial + 'px';
-
 }
 
 function verificaUltr(element, tipo) {
@@ -937,7 +1068,8 @@ cheet('h a s a n', () => {
         saldo: {sVida: 0, sAgua: 0, sDefesa: 0, sDinheiro: 0},
         total: function() {
             return this.vida + this.agua + this.defesa + this.dinheiro;
-        }
+        },
+        status: "emJogo"
     }
 
     jogadores[vez] = jogador;
@@ -953,6 +1085,7 @@ cheet('h a s a n', () => {
             atNode[i].style.cursor = "grab";
     }
 })
+
 
 /*--- voz ---*/
 
@@ -1067,4 +1200,3 @@ async function playText(texto) {
 
 }
 */
-

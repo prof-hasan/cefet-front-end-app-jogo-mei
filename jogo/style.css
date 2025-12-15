@@ -129,14 +129,15 @@ nav h1 {
     align-items: center;
     font-size: 2em;
     display: block;
-    border-radius: 50%;
-    height: 4em;
-    width: 4em;
+    border-radius: 16px;
+    height: 3em;
+    width: 5em;
     position: fixed;
     right: 1em;
-    bottom: 2em;
-    color: #687351;
-    background-color: #f1e6c3;
+    bottom: 2.5em;
+    color: #f1e6c3;
+    background-color: #687351;
+    border: 2px solid #4c543b;
 }
 
 #troca-atributos {
@@ -355,6 +356,7 @@ footer{
 
 .caixa-info ul {
     list-style-type: none;
+    margin-left: 0.7em;
 }
 
 .caixa-info li {
@@ -365,6 +367,50 @@ footer{
 
 .caixa-info strong {
     color: rgb(225, 113, 113);
+}
+
+.container-vitoria {
+    position: absolute;
+    background-color: #687351;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.container-vitoria h1{
+    font-size: 10rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.container-vitoria img {
+    width: 20em;
+    height: 20em;
+}
+
+.container-vitoria h2 {
+    font-size: 5rem;
+    font-weight: 300;
+}
+
+.btn {
+    height: 10vh;
+    width: 30vh;
+    border-radius: 20px;
+    margin: 1.7vh 0 0 0;
+    font-size: 200%;
+    background-color: #4c543b;
+    color: #f1e6c3;
+    transition: transform 0.3s ease;
+    border: 2px solid #391e0a;
+}
+
+.btn:hover{
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 @media (max-width: 1450px) {

@@ -132,15 +132,14 @@ let cartasEvt = [
 //Banco de cartas de sorte ou azar
 let vJogPergunta = [];
 let cartasSorte = [
-    /*
     {
         id: 1,
         evento: function() {
-            perguntaSorte("atributo", jogadores);
+            perguntaSorte("atributo", jogadoresEmJogo);
         },
         efeito: function() {
-            let jogMaior = checaMaiorMenor("maior");
-            let jogMenor = checaMaiorMenor("menor");
+            let jogMaior = checaMaiorMenor("maior", jogadoresEmJogo);
+            let jogMenor = checaMaiorMenor("menor", jogadoresEmJogo);
 
             let tipoAtributo = strAtUpper(respostaAtributo);
 
@@ -156,16 +155,15 @@ let cartasSorte = [
     {
         id: 2,
         evento: function() {
-            perguntaSorte("atributo", jogadores);
+            perguntaSorte("atributo", jogadoresEmJogo);
         },
         efeito: function() {
             let tipoAtributo = strAtUpper(respostaAtributo);
 
-            let vezAEsquerda = vez - 1;
-            vezAEsquerda = vezAEsquerda < 0 ? vezAEsquerda + 5 : vezAEsquerda;
+            let ultimoJogador = calculaUltimoPlayerVivo(jogadores[vez]);
 
             jogadores[vez].saldo[`s${tipoAtributo}`] += 1;
-            jogadores[vezAEsquerda].saldo[`s${tipoAtributo}`] -= 1;
+            ultimoJogador.saldo[`s${tipoAtributo}`] -= 1;
 
             for (let i = 0; i < jogadores.length; i++)
                 atualizaHTMLJogador(jogadores[i]);
@@ -174,12 +172,12 @@ let cartasSorte = [
     {
         id: 3,
         evento: function() {
-            perguntaSorte("atributo", jogadores);
+            perguntaSorte("atributo", jogadoresEmJogo);
         },
         efeito: function() {
             let tipoAtributo = strAtUpper(respostaAtributo);
 
-            let jogMenor = checaMenMaiAtributo("menor", "vida");
+            let jogMenor = checaMenMaiAtributo("menor", "vida", jogadoresEmJogo);
 
 
             jogadores[vez].saldo[`s${tipoAtributo}`] -= 1;
@@ -192,7 +190,7 @@ let cartasSorte = [
     {
         id: 4,
         evento: function() {
-            vJogPergunta = jogadores;
+            vJogPergunta = jogadoresEmJogo;
 
             let jogM12 = [];
 
@@ -201,7 +199,7 @@ let cartasSorte = [
                     jogM12.push(jogadores[i]);
             }
 
-            if (jogM12 != null)
+            if (jogM12.length != 0)
                 perguntaSorte("player", jogM12);
             else
                 console.log("NAO ROLOU");
@@ -220,7 +218,7 @@ let cartasSorte = [
     {
         id: 5,
         evento: function() {
-            perguntaSorte("troca", jogadores);
+            perguntaSorte("troca", jogadoresEmJogo);
         },
         efeito: function() {
             let tipoAtributo = "Vida";
@@ -257,11 +255,11 @@ let cartasSorte = [
                 atNode[i].style.cursor = "grab";
             }
         }
-    }, */
+    },
     {
         id: 9,
         evento: function() {
-            vJogPergunta = jogadores;
+            vJogPergunta = jogadoresEmJogo;
 
             let jogM8seg = [];
 
@@ -272,7 +270,7 @@ let cartasSorte = [
 
             console.log(jogM8seg);
 
-            if (jogM8seg != [])
+            if (jogM8seg.length != 0)
                 perguntaSorte("troca", jogM8seg);
             else
                 console.log("NAO ROLOU");
