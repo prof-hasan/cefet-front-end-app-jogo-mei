@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="">
+        <link rel="stylesheet" href="style.css">
+        <title>Jogo MEI</title>
+    </head>
+    <body>
+        <div id="container">
+            <header>
+                <section id="outros-players">
+                    <div>
+                        <img src="imgs/ferro.png" id="p2-img" class="player-portrait info" data-num="1">
+                        <span>
+                            <h2 id="p2-nome"></h2>
+                            <p id="p2-quantia-vida">Saúde: </p>
+                            <p id="p2-quantia-agua">Disp. Hídrica: </p>
+                            <p id="p2-quantia-defesa">Def. Climática: </p>
+                            <p id="p2-quantia-dinheiro">Disp. Monetária: </p>
+                        </span>
+                    </div>
+                    <div>
+                        <img src="imgs/ferro.png" id="p3-img" class="player-portrait info" data-num="2">
+                        <span>
+                            <h2 id="p3-nome"></h2>
+                            <p id="p3-quantia-vida">Saúde: </p>
+                            <p id="p3-quantia-agua">Disp. Hídrica: </p>
+                            <p id="p3-quantia-defesa">Def. Climática: </p>
+                            <p id="p3-quantia-dinheiro">Disp. Monetária: </p>
+                        </span>
+                    </div>
+                    <div>
+                        <img src="imgs/ferro.png" id="p4-img" class="player-portrait info" data-num="3">
+                        <span>
+                            <h2 id="p4-nome"></h2>
+                            <p id="p4-quantia-vida">Saúde: </p>
+                            <p id="p4-quantia-agua">Disp. Hídrica: </p>
+                            <p id="p4-quantia-defesa">Def. Climática: </p>
+                            <p id="p4-quantia-dinheiro">Disp. Monetária: </p>
+                        </span>
+                    </div>
+                    <div>
+                        <img src="imgs/ferro.png" id="p5-img" class="player-portrait info" data-num="4">
+                        <span>
+                            <h2 id="p5-nome"></h2>
+                            <p id="p5-quantia-vida">Saúde: </p>
+                            <p id="p5-quantia-agua">Disp. Hídrica: </p>
+                            <p id="p5-quantia-defesa">Def. Climática: </p>
+                            <p id="p5-quantia-dinheiro">Disp. Monetária: </p>
+                        </span>
+                    </div>
+                </section>
+            </header>
+            <nav>
+                <div>
+                    <h1 id="p1-nome">Player name</h1>
+                    <img src="imgs/ferro.png" alt="" id="p1-img" class="carta-img info" data-num="0">
+                </div>
+                <span id="player-vida" class="player-atributo">
+                    <p class="atributo-label">Saúde:</p>
+                    <div class="barra-atributo" id="p1-quantia-vida">
+                        <p></p>
+                    </div>
+                </span>
+                <span id="player-agua" class="player-atributo">
+                    <p class="atributo-label">Disponibilidade hídrica:</p>
+                    <div class="barra-atributo" id="p1-quantia-agua">
+                        <p></p>
+                    </div>
+                </span>
+                <span id="player-defesa" class="player-atributo">
+                    <p class="atributo-label">Defesa climática:</p>
+                    <div class="barra-atributo" id="p1-quantia-defesa">
+                        <p></p>
+                    </div>
+                </span>
+                <span id="player-dinheiro" class="player-atributo">
+                    <p class="atributo-label">Disponibilidade monetária:</p>
+                    <div class="barra-atributo" id="p1-quantia-dinheiro">
+                        <p></p>
+                    </div>
+                </span>
+
+                <div id="troca-atributos">
+                    <div id="troca-vida" class="troca-status" data-tipo="0"></div>
+                    <div id="troca-agua" class="troca-status" data-tipo="1"></div>
+                    <div id="troca-defesa" class="troca-status" data-tipo="2"></div>
+                    <div id="troca-dinheiro" class="troca-status" data-tipo="3"></div>
+                </div>
+                <div id="descarta-atributos">
+                    <div></div>
+                </div>
+            </nav>
+            <button id="botao-passa"><p>Passar <br>turno</p></button>
+            <main>
+            
+            </main>
+            <footer>
+                    <label id="modo-daltonismo" for="botao-daltonismo">
+                        <p>Modo de Daltonismo (Em desenvolvimento):</p>
+                        <input id="botao-daltonismo" type="checkbox">
+                    </label>
+            </footer>
+        </div>
+        <script src="js/jquery-3.7.1.min.js" defer></script>
+        <script src="js/cheet.min.js" defer></script>
+        <script src="js/bancoJogo.js" defer></script>
+        <script src="js/script.js" defer></script>
+    </body>
+</html>
