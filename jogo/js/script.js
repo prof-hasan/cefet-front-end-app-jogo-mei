@@ -894,6 +894,7 @@ function moveInfo(e) {
 
     caixaInfoEl.style.left = xInicial + 'px';
     caixaInfoEl.style.top = yInicial + 'px';
+
 }
 
 function verificaUltr(element, tipo) {
@@ -955,19 +956,28 @@ cheet('h a s a n', () => {
 
 /*--- voz ---*/
 
-// AVISOS SOBRE O ÁUDIO!!!!!!!!!!
-// delay enorme pq ele tem que pedir para a pg pra gerar o áudio e esperar ainda ela voltar, tlgd?
-// além disso, a descrição das cartas não funciona até o usuario clicar na pg por causa de uma política aí
-//   4 opções:
-// 1- continuar com o delay
-// 2- atrasar algumas funções pra que fique sincronizado
-// 3- voltar com a voz da hatsune miku, mas sem atraso
-// 4- sei nao 
+//AUDIO DA HATSUNE MIKU!!!!!
 
-// favor nao apagar meus negocio do playText() </33
+function playText(texto) {
+    if (!speechSynthesis) return;
+
+    speechSynthesis.cancel();
+
+    let utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = 'pt-BR';
+    
+    let voices = speechSynthesis.getVoices();
+    let ptBrVoice = voices.find(voice => voice.lang === 'pt-BR');
+    utterance.voice = ptBrVoice;
+
+    utterance.rate = 0.9;
+    utterance.pitch = 4;
+
+    speechSynthesis.speak(utterance);
+}
 
 // AUDIO DE VOZ NORMAL!!!!!
-
+/*
 const cacheDeAudio = {};
 let currentAudio = null;
 let usuarioInteragiu = false;
@@ -1013,57 +1023,48 @@ function playAudio(audioURL) {
 
 async function playText(texto) {
 
-    const hashTexto = await hashString(texto);
+    try {
+        const hashTexto = await hashString(texto);
 
-    if (cacheDeAudio[hashTexto]) {
-        const audioURL = cacheDeAudio[hashTexto];
-        return playAudio(audioURL);
-    } 
+        if (cacheDeAudio[hashTexto]) {
+            return playAudio(cacheDeAudio[hashTexto]);
+        } 
 
-    const resposta = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
-        method: "POST",  // envia os dados pro elevenlabs transformar em audio
-        headers: {
-             "Content-Type": "application/json",  // significa q eu to enviando dados json
-             "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
-        },
-        body: JSON.stringify({
-            text: texto
+        const resposta = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+            method: "POST",  // envia os dados pro elevenlabs transformar em audio
+            headers: {
+                "Content-Type": "application/json",  // significa q eu to enviando dados json
+                "xi-api-key": "sk_08e7933c56ddfa17aee9e04ddafe61304910b50b1279b79f"
+            },
+            body: JSON.stringify({
+                text: texto
+            })
         })
-   })
 
-    .then(respostaB => respostaB.blob())  // audio convertido em blob: binary large object - pega o audio e 'empacota'
+        if (!resposta.ok) {
+                const erro = await resposta.json();
+                console.error("Erro ElevenLabs:", erro);
+                return;
+            }
 
-    .then(resposta => {
+        const contentType = resposta.headers.get("Content-Type");
 
-        const audioUrl = URL.createObjectURL(resposta);  // transforma o audio em uma URL pra q nao precise salvar o arquivo
-        cacheDeAudio[hashTexto] = audioUrl;
-        playAudio(audioUrl);
+        if (!contentType || !contentType.startsWith("audio")) {
+            const erro = await resposta.text();
+            console.error("Resposta não é áudio:", erro);
+            return;
+        }
 
-        const audio = new Audio(audioUrl);
+        const audioBlob = await resposta.blob();
+        const audioURL = URL.createObjectURL(audioBlob);
 
-        currentAudio = audio;
+        cacheDeAudio[hashTexto] = audioURL;
+        playAudio(audioURL);
 
-        audio.play();
-    })
+    } catch (err) {
+        console.error("Erro geral no playText:", err);
+    }
 
-    .catch(error => {
-        console.error("Erro ao tentar tocar o áudio. Prosseguindo.", error);
-            return Promise.resolve(); 
-    });
-
-}
-
-
-//AUDIO DA HATSUNE MIKU!!!!!
-/*
-function playText(texto) {
-    let utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'pt-BR';
-    
-    let voices = speechSynthesis.getVoices();
-    let ptBrVoice = voices.find(voice => voice.lang === 'pt-BR');
-    utterance.voice = ptBrVoice;
-
-    speechSynthesis.speak(utterance);
 }
 */
+
